@@ -14,7 +14,7 @@ public class MenuState extends State
     {
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
-        background = new Texture("bg.png");
+        background = new Texture("bgff2.png");
         playBtn = new Texture("playbtn.png");
     }
 

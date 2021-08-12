@@ -13,7 +13,6 @@ public class Watermelon
     private static final int MOVEMENT = 100;
     private Vector3 position;
     private Vector3 velocity;
-    private Texture watermelon;
     private Rectangle bounds;
     private Animation watermelonAnimation;
     private Texture texture;
@@ -23,7 +22,7 @@ public class Watermelon
     {
         position = new Vector3(x, y, 0);
         velocity = new Vector3(0, 0, 0);
-        texture = new Texture("birdanimation.png");
+        texture = new Texture("wmanimation2.png");
         watermelonAnimation = new Animation(texture, 3, 0.5f);
         bounds = new Rectangle(x, y, texture.getWidth() / 3.0f, texture.getHeight());
         sound = Gdx.audio.newSound(Gdx.files.internal("sfx_wing.ogg"));

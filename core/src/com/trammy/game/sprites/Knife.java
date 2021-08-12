@@ -11,7 +11,7 @@ public class Knife
     public static final int KNIFE_WIDTH = 52;
     private static final int FLUCTUATION = 130;
     private static final int TUBE_GAP = 100;
-    private static final int LOWEST_OPENING = 120;
+    private static final int LOWEST_OPENING = 100;
     private Texture topKnife, bottomKnife;
     private Vector2 posTopKnife, posBotKnife;
     private Rectangle boundsTop, boundsBot;
@@ -19,8 +19,8 @@ public class Knife
 
     public Knife(float x)
     {
-        topKnife = new Texture("toptube.png");
-        bottomKnife = new Texture("bottomtube.png");
+        topKnife = new Texture("forkTop.png");
+        bottomKnife = new Texture("forkBot.png");
         rand = new Random();
 
         posTopKnife = new Vector2(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);

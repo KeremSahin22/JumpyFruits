@@ -25,7 +25,7 @@ public class PlayState extends State
         super(gsm);
         watermelon = new Watermelon(50,300);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
-        bg = new Texture("bg.png");
+        bg = new Texture("bgff2.png");
         knives = new Array<Knife>();
 
         ground = new Texture("ground.png");
