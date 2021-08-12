@@ -21,6 +21,8 @@ public class MenuState extends State
     @Override
     public void handleInput()
     {
+        //boolean isInXOfBtn = cam.position.x - (playBtn.getWidth() / 2.0f) <= Gdx.input.getX() && Gdx.input.getX() <= ( cam.position.x - (playBtn.getWidth() / 2.0f) ) + playBtn.getWidth();
+        //boolean isInYOfBtn = ( cam.position.y <= Gdx.input.getY() ) && Gdx.input.getY()  <= cam.position.y + playBtn.getHeight() );
         if(Gdx.input.justTouched())
         {
             gsm.set(new PlayState(gsm));

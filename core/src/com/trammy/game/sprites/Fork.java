@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
-public class Knife
+public class Fork
 {
     public static final int KNIFE_WIDTH = 52;
     private static final int FLUCTUATION = 130;
@@ -17,7 +17,7 @@ public class Knife
     private Rectangle boundsTop, boundsBot;
     private Random rand;
 
-    public Knife(float x)
+    public Fork(float x)
     {
         topKnife = new Texture("forkTop.png");
         bottomKnife = new Texture("forkBot.png");

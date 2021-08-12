@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.trammy.game.JumpyFruits;
-import com.trammy.game.sprites.Knife;
+import com.trammy.game.sprites.Fork;
 import com.trammy.game.sprites.Watermelon;
 
 public class PlayState extends State
@@ -16,7 +16,7 @@ public class PlayState extends State
     private static final int GROUND_Y_OFFSET = -50;
     private Watermelon watermelon;
     private Texture bg;
-    private Array<Knife> knives;
+    private Array<Fork> forks;
     private Texture ground;
     private Vector2 groundPos1, groundPos2;
 
@@ -26,7 +26,7 @@ public class PlayState extends State
         watermelon = new Watermelon(50,300);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
         bg = new Texture("bgff2.png");
-        knives = new Array<Knife>();
+        forks = new Array<Fork>();
 
         ground = new Texture("ground.png");
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
@@ -34,7 +34,7 @@ public class PlayState extends State
 
         for(int i = 1; i <= KNIFE_COUNT; i++)
         {
-            knives.add(new Knife(i * (KNIFE_SPACING + Knife.KNIFE_WIDTH)));
+            forks.add(new Fork(i * (KNIFE_SPACING + Fork.KNIFE_WIDTH)));
         }
     }
 
@@ -52,14 +52,14 @@ public class PlayState extends State
         updateGround();
         watermelon.update(dt);
         cam.position.x = watermelon.getPosition().x + 80;
-        for (int i = 0; i < knives.size; i++)
+        for (int i = 0; i < forks.size; i++)
         {
-            Knife knife = knives.get(i);
+            Fork fork = forks.get(i);
 
-            if( cam.position.x - (cam.viewportWidth / 2) > knife.getPosTopKnife().x + knife.getTopKnife().getWidth() )
-                knife.reposition(knife.getPosTopKnife().x + ((Knife.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
+            if( cam.position.x - (cam.viewportWidth / 2) > fork.getPosTopKnife().x + fork.getTopKnife().getWidth() )
+                fork.reposition(fork.getPosTopKnife().x + ((Fork.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
 
-            if(knife.collides(watermelon.getBounds()))
+            if(fork.collides(watermelon.getBounds()))
                 gsm.set(new PlayState(gsm));
         }
 
@@ -75,10 +75,10 @@ public class PlayState extends State
         sb.begin();
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
         sb.draw(watermelon.getTexture(), watermelon.getPosition().x, watermelon.getPosition().y);
-        for ( Knife knife : knives )
+        for ( Fork fork : forks )
         {
-            sb.draw(knife.getTopKnife(), knife.getPosTopKnife().x, knife.getPosTopKnife().y);
-            sb.draw(knife.getBottomKnife(), knife.getPosBotKnife().x, knife.getPosBotKnife().y);
+            sb.draw(fork.getTopKnife(), fork.getPosTopKnife().x, fork.getPosTopKnife().y);
+            sb.draw(fork.getBottomKnife(), fork.getPosBotKnife().x, fork.getPosBotKnife().y);
         }
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
@@ -92,8 +92,8 @@ public class PlayState extends State
         bg.dispose();
         watermelon.dispose();
         ground.dispose();
-        for( Knife knife : knives )
-            knife.dispose();
+        for( Fork fork : forks )
+            fork.dispose();
         System.out.println("Play State Disposed");
     }
 

@@ -22,7 +22,7 @@ public class Watermelon
     {
         position = new Vector3(x, y, 0);
         velocity = new Vector3(0, 0, 0);
-        texture = new Texture("wmanimation2.png");
+        texture = new Texture("wmanimation3.png");
         watermelonAnimation = new Animation(texture, 3, 0.5f);
         bounds = new Rectangle(x, y, texture.getWidth() / 3.0f, texture.getHeight());
         sound = Gdx.audio.newSound(Gdx.files.internal("sfx_wing.ogg"));
