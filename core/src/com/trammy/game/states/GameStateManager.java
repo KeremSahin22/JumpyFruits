@@ -1,5 +1,6 @@
 package com.trammy.game.states;
 
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.Stack;
@@ -7,9 +8,12 @@ import java.util.Stack;
 public class GameStateManager
 {
     private Stack<State> states;
-    public GameStateManager()
+    private SpriteBatch batch;
+    public GameStateManager(SpriteBatch batch)
     {
         states = new Stack<State>();
+        this.batch = batch;
+
     }
 
     public void push(State state)
@@ -27,7 +31,9 @@ public class GameStateManager
         states.pop().dispose();
         states.push(state);
     }
-
+    public SpriteBatch getBatch(){
+        return batch;
+    }
     public void update(float dt)
     {
         states.peek().update(dt);

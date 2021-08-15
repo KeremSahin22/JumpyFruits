@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.trammy.game.states.GameStateManager;
 import com.trammy.game.states.MenuState;
@@ -17,12 +19,14 @@ public class JumpyFruits extends ApplicationAdapter
 	private GameStateManager gsm;
 	private SpriteBatch batch;
 	private Music music;
+	public static BitmapFont font;
 	
 	@Override
 	public void create()
 	{
 		batch = new SpriteBatch();
-		gsm = new GameStateManager();
+		font = new BitmapFont();
+		gsm = new GameStateManager(batch);
 		music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
 		music.setLooping(true);
 		music.setVolume(0.1f);
