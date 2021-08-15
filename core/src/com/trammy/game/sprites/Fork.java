@@ -12,50 +12,50 @@ public class Fork
     private static final int FLUCTUATION = 130;
     private static final int TUBE_GAP = 100;
     private static final int LOWEST_OPENING = 100;
-    private Texture topKnife, bottomKnife;
-    private Vector2 posTopKnife, posBotKnife;
+    private Texture topFork, bottomFork;
+    private Vector2 posTopFork, posBotFork;
     private Rectangle boundsTop, boundsBot;
     private Random rand;
 
     public Fork(float x)
     {
-        topKnife = new Texture("forkTop.png");
-        bottomKnife = new Texture("forkBot.png");
+        topFork = new Texture("forkTop.png");
+        bottomFork = new Texture("forkBot.png");
         rand = new Random();
 
-        posTopKnife = new Vector2(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
-        posBotKnife = new Vector2(x, posTopKnife.y - TUBE_GAP - bottomKnife.getHeight());
+        posTopFork = new Vector2(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
+        posBotFork = new Vector2(x, posTopFork.y - TUBE_GAP - bottomFork.getHeight());
 
-        boundsTop = new Rectangle( posTopKnife.x, posTopKnife.y, topKnife.getWidth(), topKnife.getHeight());
-        boundsBot = new Rectangle( posBotKnife.x, posBotKnife.y, bottomKnife.getWidth(), bottomKnife.getHeight());
+        boundsTop = new Rectangle( posTopFork.x, posTopFork.y, topFork.getWidth(), topFork.getHeight());
+        boundsBot = new Rectangle( posBotFork.x, posBotFork.y, bottomFork.getWidth(), bottomFork.getHeight());
     }
 
-    public Texture getTopKnife()
+    public Texture getTopFork()
     {
-        return topKnife;
+        return topFork;
     }
 
-    public Texture getBottomKnife()
+    public Texture getBottomFork()
     {
-        return bottomKnife;
+        return bottomFork;
     }
 
-    public Vector2 getPosTopKnife()
+    public Vector2 getPosTopFork()
     {
-        return posTopKnife;
+        return posTopFork;
     }
 
-    public Vector2 getPosBotKnife()
+    public Vector2 getPosBotFork()
     {
-        return posBotKnife;
+        return posBotFork;
     }
 
     public void reposition(float x)
     {
-        posTopKnife.set(x, rand.nextInt(FLUCTUATION)+TUBE_GAP+LOWEST_OPENING);
-        posBotKnife.set(x, posTopKnife.y - TUBE_GAP - bottomKnife.getHeight());
-        boundsTop.setPosition(posTopKnife.x, posTopKnife.y);
-        boundsBot.setPosition(posBotKnife.x, posBotKnife.y);
+        posTopFork.set(x, rand.nextInt(FLUCTUATION)+TUBE_GAP+LOWEST_OPENING);
+        posBotFork.set(x, posTopFork.y - TUBE_GAP - bottomFork.getHeight());
+        boundsTop.setPosition(posTopFork.x, posTopFork.y);
+        boundsBot.setPosition(posBotFork.x, posBotFork.y);
     }
 
     public boolean collides( Rectangle player )
@@ -65,7 +65,7 @@ public class Fork
 
     public void dispose()
     {
-        topKnife.dispose();
-        bottomKnife.dispose();
+        topFork.dispose();
+        bottomFork.dispose();
     }
 }

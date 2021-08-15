@@ -17,18 +17,21 @@ public class PlayState extends State
     private Watermelon watermelon;
     private Texture bg;
     private Array<Fork> forks;
+    private double oldForkPos = 0;
     private Texture ground;
+    private int score;
     private Vector2 groundPos1, groundPos2;
+
 
     public PlayState(GameStateManager gsm)
     {
         super(gsm);
         watermelon = new Watermelon(50,300);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
-        bg = new Texture("bgff2.png");
+        bg = new Texture("bgnight.png");
         forks = new Array<Fork>();
-
-        ground = new Texture("ground.png");
+        score = 0;
+        ground = new Texture("groundjf.png");
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
 
@@ -57,16 +60,24 @@ public class PlayState extends State
         {
             Fork fork = forks.get(i);
 
-            if (cam.position.x - (cam.viewportWidth / 2) > fork.getPosTopKnife().x + fork.getTopKnife().getWidth())
-                fork.reposition(fork.getPosTopKnife().x + ((Fork.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
+            if( cam.position.x - (cam.viewportWidth / 2) > fork.getPosTopFork().x + fork.getTopFork().getWidth() )
+                fork.reposition(fork.getPosTopFork().x + ((Fork.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
 
-            if (fork.collides(watermelon.getBounds()))
+
+            if(watermelon.getPosition().x >= (fork.getPosTopFork().x + fork.getTopFork().getWidth()) && oldForkPos != fork.getPosTopFork().x + fork.getTopFork().getWidth()  ) {
+                addScore(1);
+                oldForkPos = fork.getPosTopFork().x + fork.getTopFork().getWidth();
+                
+            }
+
+            if(fork.collides(watermelon.getBounds()))
                 gsm.set(new PlayState(gsm));
         }
 
         if (watermelon.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
             gsm.set(new PlayState(gsm));
         cam.update();
+
     }
     
     @Override
@@ -76,13 +87,14 @@ public class PlayState extends State
         sb.begin();
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
         sb.draw(watermelon.getTexture(), watermelon.getPosition().x, watermelon.getPosition().y);
-        for ( Fork fork : forks )
-        {
-            sb.draw(fork.getTopKnife(), fork.getPosTopKnife().x, fork.getPosTopKnife().y);
-            sb.draw(fork.getBottomKnife(), fork.getPosBotKnife().x, fork.getPosBotKnife().y);
-        }
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
+        for ( Fork fork : forks )
+        {
+            sb.draw(fork.getTopFork(), fork.getPosTopFork().x, fork.getPosTopFork().y);
+            sb.draw(fork.getBottomFork(), fork.getPosBotFork().x, fork.getPosBotFork().y);
+        }
+        JumpyFruits.font.draw(sb, ""+ score +"", cam.position.x , cam.position.y * 7 / 4);
         sb.end();
 
     }
@@ -105,4 +117,9 @@ public class PlayState extends State
         if(cam.position.x - cam.viewportWidth/2 > groundPos2.x + ground.getWidth())
             groundPos2.add(ground.getWidth() * 2 ,0);
     }
+
+    public void addScore(int value){
+        score += value;
+    }
+
 }
