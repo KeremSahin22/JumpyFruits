@@ -45,8 +45,9 @@ public class PlayState extends State
             watermelon.jump();
     }
 
+
     @Override
-    public void update(float dt)
+    public void update ( float dt)
     {
         handleInput();
         updateGround();
@@ -56,18 +57,18 @@ public class PlayState extends State
         {
             Fork fork = forks.get(i);
 
-            if( cam.position.x - (cam.viewportWidth / 2) > fork.getPosTopKnife().x + fork.getTopKnife().getWidth() )
+            if (cam.position.x - (cam.viewportWidth / 2) > fork.getPosTopKnife().x + fork.getTopKnife().getWidth())
                 fork.reposition(fork.getPosTopKnife().x + ((Fork.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
 
-            if(fork.collides(watermelon.getBounds()))
+            if (fork.collides(watermelon.getBounds()))
                 gsm.set(new PlayState(gsm));
         }
 
-        if(watermelon.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
+        if (watermelon.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
             gsm.set(new PlayState(gsm));
         cam.update();
     }
-
+    
     @Override
     public void render(SpriteBatch sb)
     {
