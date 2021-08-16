@@ -34,8 +34,7 @@ public class PauseState extends State{
     }
 
     public void createButtons(){
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+
 
         int Help_Guides = 12;
         int row_height = Gdx.graphics.getWidth() / 3;
@@ -44,8 +43,8 @@ public class PauseState extends State{
         newGameBtnTexture = new Texture("newgamebtn4.png");
         Drawable newGameButtonDrawable = new TextureRegionDrawable(new TextureRegion(newGameBtnTexture));
         ImageButton newGameBtn = new ImageButton(newGameButtonDrawable);
-        newGameBtn.setSize(col_width,(float)(row_height));
-        newGameBtn.setPosition(Gdx.graphics.getWidth() /7 *2  ,Gdx.graphics.getHeight() / 2);
+        newGameBtn.setSize(newGameBtnTexture.getWidth(),newGameBtnTexture.getHeight());
+        newGameBtn.setPosition(cam.position.x - newGameBtnTexture.getWidth()/2  ,cam.position.y);
         newGameBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -57,14 +56,14 @@ public class PauseState extends State{
                 return true;
             }
         });
-        stage.addActor(newGameBtn);
+
 
 
         resumeBtnTexture = new Texture("resumebtn.png");
         Drawable resumeButtonDrawable = new TextureRegionDrawable(new TextureRegion(resumeBtnTexture));
         ImageButton resumeBtn = new ImageButton(resumeButtonDrawable);
         resumeBtn.setSize(resumeBtnTexture.getWidth(), resumeBtnTexture.getHeight());
-        resumeBtn.setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+        resumeBtn.setPosition(cam.position.x - resumeBtnTexture.getWidth()/2  ,cam.position.y + newGameBtnTexture.getHeight() + 10);
         resumeBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -76,15 +75,15 @@ public class PauseState extends State{
                 return true;
             }
         });
-        stage.addActor(resumeBtn);
+
 
 
         menuBtnTexture = new Texture("mainmenubtn.png");
         Drawable menuButtonDrawable = new TextureRegionDrawable(new TextureRegion(menuBtnTexture));
         ImageButton mainMenuBtn = new ImageButton(menuButtonDrawable);
-        resumeBtn.setSize(menuBtnTexture.getWidth(), menuBtnTexture.getHeight());
-        resumeBtn.setPosition(Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight()/3);
-        resumeBtn.addListener(new InputListener(){
+        mainMenuBtn.setSize(menuBtnTexture.getWidth(), menuBtnTexture.getHeight());
+        mainMenuBtn.setPosition(cam.position.x - resumeBtnTexture.getWidth()/2  ,cam.position.y - newGameBtnTexture.getHeight() - 10);
+        mainMenuBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 System.out.println("Press a Button");
@@ -95,7 +94,12 @@ public class PauseState extends State{
                 return true;
             }
         });
+
+        stage = new Stage(viewport, gsm.getBatch());
+        stage.addActor(newGameBtn);
         stage.addActor(mainMenuBtn);
+        stage.addActor(resumeBtn);
+        Gdx.input.setInputProcessor(stage);
 
 
     }
