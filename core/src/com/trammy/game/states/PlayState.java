@@ -3,8 +3,19 @@ package com.trammy.game.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.trammy.game.JumpyFruits;
 import com.trammy.game.sprites.Fork;
 import com.trammy.game.sprites.Watermelon;
@@ -21,6 +32,8 @@ public class PlayState extends State
     private Texture ground;
     private int score;
     private Vector2 groundPos1, groundPos2;
+    private Stage stage;
+    private Texture pauseBtnTexture;
 
 
     public PlayState(GameStateManager gsm)
@@ -41,6 +54,34 @@ public class PlayState extends State
         }
     }
 
+    public void createButton(){
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
+        int Help_Guides = 12;
+        int row_height = Gdx.graphics.getWidth() / 12;
+        int col_width = Gdx.graphics.getWidth() / 12;
+        pauseBtnTexture = new Texture("pause-button.png");
+        Drawable pauseButtonDrawable = new TextureRegionDrawable(new TextureRegion(pauseBtnTexture));
+        ImageButton pauseBtn = new ImageButton(pauseButtonDrawable);
+        pauseBtn.setSize(col_width*4,(float)(row_height*2));
+        pauseBtn.setPosition(Gdx.graphics.getWidth() - pauseBtn.getWidth(),Gdx.graphics.getHeight()-row_height*5 /2);
+        pauseBtn.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                System.out.println("Press a Button");
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                gsm.push(new PauseState(gsm));
+                return true;
+            }
+        });
+        stage.addActor(pauseBtn);
+
+
+
+    }
     @Override
     public void handleInput()
     {
@@ -96,6 +137,9 @@ public class PlayState extends State
         }
         JumpyFruits.font.draw(sb, ""+ score +"", cam.position.x , cam.position.y * 7 / 4);
         sb.end();
+        createButton();
+        stage.act();
+        stage.draw();
 
     }
 
@@ -108,6 +152,7 @@ public class PlayState extends State
         for( Fork fork : forks )
             fork.dispose();
         System.out.println("Play State Disposed");
+        stage.dispose();
     }
 
     private void updateGround()

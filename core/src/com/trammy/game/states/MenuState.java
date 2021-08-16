@@ -31,7 +31,7 @@ public class MenuState extends State
     {
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
-        background = new Texture("bgff2.png");
+        background = new Texture("bgnight.png");
         playBtn = new Texture("playbtn.png");
 
         int Help_Guides = 12;
@@ -85,6 +85,7 @@ public class MenuState extends State
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(background, 0, 0);
+        JumpyFruits.font.draw(sb, "Jumpy Fruits", 100, 150);
         sb.draw(playBtn, cam.position.x - (playBtn.getWidth() / 2.0f), cam.position.y );
         sb.end();
 
