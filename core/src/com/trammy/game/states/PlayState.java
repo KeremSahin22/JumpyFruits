@@ -58,14 +58,11 @@ public class PlayState extends State
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        int Help_Guides = 12;
-        int row_height = Gdx.graphics.getWidth() / 12;
-        int col_width = Gdx.graphics.getWidth() / 12;
-        pauseBtnTexture = new Texture("pause-button.png");
+        pauseBtnTexture = new Texture("pausebtn.png");
         Drawable pauseButtonDrawable = new TextureRegionDrawable(new TextureRegion(pauseBtnTexture));
         ImageButton pauseBtn = new ImageButton(pauseButtonDrawable);
-        pauseBtn.setSize(col_width*4,(float)(row_height*2));
-        pauseBtn.setPosition(Gdx.graphics.getWidth() - pauseBtn.getWidth(),Gdx.graphics.getHeight()-row_height*5 /2);
+        pauseBtn.setSize(pauseBtnTexture.getWidth() , pauseBtnTexture.getHeight());
+        pauseBtn.setPosition(Gdx.graphics.getWidth() - pauseBtnTexture.getWidth() -25 ,Gdx.graphics.getHeight() - pauseBtnTexture.getHeight() - 25);
         pauseBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -108,7 +105,7 @@ public class PlayState extends State
             if(watermelon.getPosition().x >= (fork.getPosTopFork().x + fork.getTopFork().getWidth()) && oldForkPos != fork.getPosTopFork().x + fork.getTopFork().getWidth()  ) {
                 addScore(1);
                 oldForkPos = fork.getPosTopFork().x + fork.getTopFork().getWidth();
-                
+
             }
 
             if(fork.collides(watermelon.getBounds()))
@@ -120,7 +117,7 @@ public class PlayState extends State
         cam.update();
 
     }
-    
+
     @Override
     public void render(SpriteBatch sb)
     {
@@ -168,3 +165,4 @@ public class PlayState extends State
     }
 
 }
+
