@@ -36,6 +36,13 @@ public class JumpyFruits extends ApplicationAdapter
 	}
 
 	@Override
+	public void resize(int width, int height)
+	{
+		super.resize(width, height);
+		gsm.resize(width, height);
+	}
+
+	@Override
 	public void render()
 	{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -24,44 +24,54 @@ public class MenuState extends State
 {
     private Texture background;
     private Texture playBtn;
-
     private Stage stage;
+    private TextureRegion playBtnTextureRegion;
+    private TextureRegionDrawable playBtnTextureDrawable;
+    private ImageButton playButton;
+
 
     public MenuState(GameStateManager gsm)
     {
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
-        background = new Texture("bgnight.png");
+        background = new Texture("bgff2.png");
+        createButton();
+    }
+
+    public void createButton()
+    {
         playBtn = new Texture("playbtn.png");
+        playBtnTextureRegion = new TextureRegion(playBtn);
+        playBtnTextureDrawable = new TextureRegionDrawable(playBtnTextureRegion);
+        playButton = new ImageButton(playBtnTextureDrawable);
+        playButton.setPosition(cam.position.x- (playBtn.getWidth() / 2.0f), cam.position.y);
 
-        int Help_Guides = 12;
-        int row_height = Gdx.graphics.getWidth() / 12;
-        int col_width = Gdx.graphics.getWidth() / 12;
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-
-        Drawable playBtnDrawable = new TextureRegionDrawable(new TextureRegion(playBtn));
-        ImageButton button = new ImageButton(playBtnDrawable);
-        button.setSize(col_width*4,(float)(row_height*2));
-        button.setPosition(col_width,Gdx.graphics.getHeight()-row_height*6);
-        button.addListener(new InputListener()
+        playButton.addListener( new InputListener()
         {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                System.out.println("BRUHHHHHHHHHHH");
+                return true;
+            }
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
-                //gsm.set(new PlayState(gsm))//DOKUNULUNCA YAPMAN GEREKEN ŞEYİ HALLET :)
+                gsm.set(new PlayState(gsm));
+
             }
         });
-        stage.addActor(button);
-
-
+        stage = new Stage(viewport, gsm.getBatch());
+        stage.addActor(playButton);
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void handleInput()
     {
-        Vector3 mousePosition = new Vector3( Gdx.input.getX(),Gdx.input.getY(),0);
+        /**Vector3 mousePosition = new Vector3( Gdx.input.getX(),Gdx.input.getY(),0);
         mousePosition = cam.unproject(mousePosition);
         boolean isInXOfBtn = cam.position.x - (playBtn.getWidth() / 2.0f) <= mousePosition.x && mousePosition.x <= ( cam.position.x - (playBtn.getWidth() / 2.0f) ) + playBtn.getWidth();
         boolean isInYOfBtn = ( cam.position.y <= mousePosition.y ) && mousePosition.y <= cam.position.y + playBtn.getHeight();
@@ -69,25 +79,26 @@ public class MenuState extends State
         if(Gdx.input.isTouched() && isInXOfBtn && isInYOfBtn )
         {
             gsm.set(new PlayState(gsm));
-        }
-
+        }*/
     }
 
     @Override
     public void update(float dt)
     {
-        handleInput();
+        //handleInput();
     }
 
     @Override
     public void render(SpriteBatch sb)
     {
+        cam.update();
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
         sb.draw(background, 0, 0);
-        JumpyFruits.font.draw(sb, "Jumpy Fruits", 100, 150);
-        sb.draw(playBtn, cam.position.x - (playBtn.getWidth() / 2.0f), cam.position.y );
+        //sb.draw(playBtn, cam.position.x - (playBtn.getWidth() / 2.0f), cam.position.y );
         sb.end();
+        stage.act();
+        stage.draw();
 
     }
 
@@ -96,6 +107,14 @@ public class MenuState extends State
     {
         background.dispose();
         playBtn.dispose();
+        stage.dispose();
         System.out.println("Menu State Disposed");
+    }
+
+    @Override
+    public void resize(int width, int height)
+    {
+        super.resize(width, height);
+        stage.getViewport().update(width,height,true);
     }
 }

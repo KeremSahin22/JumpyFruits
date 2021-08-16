@@ -43,4 +43,9 @@ public class GameStateManager
     {
         states.peek().render(sb);
     }
+
+    public void resize(int width, int height)
+    {
+        states.peek().resize(width, height);
+    }
 }
