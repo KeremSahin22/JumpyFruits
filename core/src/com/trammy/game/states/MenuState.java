@@ -31,7 +31,7 @@ public class MenuState extends State
     public MenuState(GameStateManager gsm)
     {
         super(gsm);
-        cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
+        cam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
         backgroundImg = new Texture("bg_grid.png");
         createButtons();
     }
@@ -60,7 +60,7 @@ public class MenuState extends State
 
         charactersImg = new Texture("characterbtn.png");
         charactersButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(charactersImg)));
-        charactersButton.setPosition(cam.position.x - charactersImg.getWidth()/2.0f, cam.position.y - 60);
+        charactersButton.setPosition(cam.position.x - charactersImg.getWidth()/2.0f, cam.position.y*0.70f);
         charactersButton.addListener(new InputListener()
         {
             @Override
@@ -78,7 +78,7 @@ public class MenuState extends State
 
         mapImg = new Texture("mapbtn.png");
         mapButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(mapImg)));
-        mapButton.setPosition(cam.position.x - mapImg.getWidth()/2.0f, cam.position.y - 100 );
+        mapButton.setPosition(cam.position.x - mapImg.getWidth()/2.0f, cam.position.y*0.50f );
         mapButton.addListener(new InputListener()
         {
             @Override
@@ -129,7 +129,6 @@ public class MenuState extends State
     public void dispose()
     {
         backgroundImg.dispose();
-        //playBtn.dispose();
         stage.dispose();
         System.out.println("Menu State Disposed");
     }
@@ -138,7 +137,6 @@ public class MenuState extends State
     public void resize(int width, int height)
     {
         viewport.update(width, height, true);
-        //stage.getCamera().position.set(JumpyFruits.WIDTH/2.0f,JumpyFruits.HEIGHT/2.0f,0);
-        stage.getCamera().update();
+        cam.update();
     }
 }

@@ -15,6 +15,7 @@ public class JumpyFruits extends ApplicationAdapter
 
 	public static final int WIDTH = 480;
 	public static final int HEIGHT = 800;
+	public static final float ASPECT_RATIO = (float) WIDTH / (float) HEIGHT;
 	public static final String TITLE = "Jumpy Fruits";
 	private GameStateManager gsm;
 	private SpriteBatch batch;
@@ -26,12 +27,12 @@ public class JumpyFruits extends ApplicationAdapter
 	{
 		batch = new SpriteBatch();
 		font = new BitmapFont(Gdx.files.internal("Consolas.fnt"));
-		gsm = new GameStateManager(batch);
 		music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
 		music.setLooping(true);
 		music.setVolume(0.1f);
 		music.play();
 		Gdx.gl.glClearColor(1,0,0,1);
+		gsm = new GameStateManager(batch);
 		gsm.push(new MenuState(gsm));
 	}
 
