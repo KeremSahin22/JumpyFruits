@@ -25,7 +25,7 @@ public class JumpyFruits extends ApplicationAdapter
 	public void create()
 	{
 		batch = new SpriteBatch();
-		font = new BitmapFont();
+		font = new BitmapFont(Gdx.files.internal("Consolas.fnt"));
 		gsm = new GameStateManager(batch);
 		music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
 		music.setLooping(true);
@@ -55,6 +55,7 @@ public class JumpyFruits extends ApplicationAdapter
 	{
 		super.dispose();
 		music.dispose();
+		font.dispose();
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.trammy.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -10,11 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.trammy.game.JumpyFruits;
 import com.trammy.game.sprites.Fork;
@@ -25,25 +29,34 @@ public class PlayState extends State
     private static final int KNIFE_SPACING = 125;
     private static final int KNIFE_COUNT = 4;
     private static final int GROUND_Y_OFFSET = -50;
+    private int score;
+    private String scoreText;
+    private Label scoreLabel;
+    private Label.LabelStyle labelStyle;
     private Watermelon watermelon;
-    private Texture bg;
+    private Texture bg, ground, pauseBtnTexture;
     private Array<Fork> forks;
     private double oldForkPos = 0;
-    private Texture ground;
-    private int score;
     private Vector2 groundPos1, groundPos2;
-    private Stage stage;
-    private Texture pauseBtnTexture;
+    private Stage hudStage;
+    private ImageButton pauseBtn;
+    private OrthographicCamera hudCam;
+    private ScreenViewport hudViewport;
 
 
     public PlayState(GameStateManager gsm)
     {
         super(gsm);
+        score = 0;
+        hudCam = new OrthographicCamera(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+        hudCam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+        hudViewport = new ScreenViewport(hudCam);
+
         watermelon = new Watermelon(50,300);
-        cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
+        cam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
         bg = new Texture("bgnight.png");
         forks = new Array<Fork>();
-        score = 0;
+
         ground = new Texture("groundjf.png");
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
@@ -52,16 +65,17 @@ public class PlayState extends State
         {
             forks.add(new Fork(i * (KNIFE_SPACING + Fork.KNIFE_WIDTH)));
         }
+
+        createButton();
     }
 
-    public void createButton(){
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-
+    public void createButton()
+    {
+        scoreText = "" + 0;
         pauseBtnTexture = new Texture("pausebtn.png");
         Drawable pauseButtonDrawable = new TextureRegionDrawable(new TextureRegion(pauseBtnTexture));
-        ImageButton pauseBtn = new ImageButton(pauseButtonDrawable);
-        pauseBtn.setSize(pauseBtnTexture.getWidth() , pauseBtnTexture.getHeight());
+        pauseBtn = new ImageButton(pauseButtonDrawable);
+        pauseBtn.setSize(pauseBtnTexture.getWidth(), pauseBtnTexture.getHeight());
         pauseBtn.setPosition(Gdx.graphics.getWidth() - pauseBtnTexture.getWidth() -25 ,Gdx.graphics.getHeight() - pauseBtnTexture.getHeight() - 25);
         pauseBtn.addListener(new InputListener(){
             @Override
@@ -74,18 +88,16 @@ public class PlayState extends State
                 return true;
             }
         });
-        stage.addActor(pauseBtn);
-
-
-
+        //JumpyFruits.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        labelStyle = new Label.LabelStyle(JumpyFruits.font, Color.WHITE);
+        scoreLabel = new Label(scoreText, labelStyle);
+        scoreLabel.setPosition(Gdx.graphics.getWidth()/2.0f - scoreLabel.getWidth()/2,Gdx.graphics.getHeight()*((float)7/8));
+        scoreLabel.setFontScale(4);
+        hudStage = new Stage(hudViewport,gsm.getBatch());
+        hudStage.addActor(pauseBtn);
+        hudStage.addActor(scoreLabel);
+        Gdx.input.setInputProcessor(hudStage);
     }
-    @Override
-    public void handleInput()
-    {
-        if(Gdx.input.justTouched())
-            watermelon.jump();
-    }
-
 
     @Override
     public void update ( float dt)
@@ -102,8 +114,10 @@ public class PlayState extends State
                 fork.reposition(fork.getPosTopFork().x + ((Fork.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
 
 
-            if(watermelon.getPosition().x >= (fork.getPosTopFork().x + fork.getTopFork().getWidth()) && oldForkPos != fork.getPosTopFork().x + fork.getTopFork().getWidth()  ) {
+            if(watermelon.getPosition().x >= (fork.getPosTopFork().x + fork.getTopFork().getWidth()) && oldForkPos != fork.getPosTopFork().x + fork.getTopFork().getWidth()  )
+            {
                 addScore(1);
+                scoreLabel.setText(scoreText);
                 oldForkPos = fork.getPosTopFork().x + fork.getTopFork().getWidth();
 
             }
@@ -116,6 +130,13 @@ public class PlayState extends State
             gsm.set(new PlayState(gsm));
         cam.update();
 
+    }
+
+    @Override
+    public void handleInput()
+    {
+        if(Gdx.input.justTouched())
+            watermelon.jump();
     }
 
     @Override
@@ -132,11 +153,9 @@ public class PlayState extends State
             sb.draw(fork.getTopFork(), fork.getPosTopFork().x, fork.getPosTopFork().y);
             sb.draw(fork.getBottomFork(), fork.getPosBotFork().x, fork.getPosBotFork().y);
         }
-        JumpyFruits.font.draw(sb, ""+ score +"", cam.position.x , cam.position.y * 7 / 4);
         sb.end();
-        createButton();
-        stage.act();
-        stage.draw();
+        hudStage.act();
+        hudStage.draw();
 
     }
 
@@ -149,7 +168,13 @@ public class PlayState extends State
         for( Fork fork : forks )
             fork.dispose();
         System.out.println("Play State Disposed");
-        stage.dispose();
+        hudStage.dispose();
+    }
+
+    @Override
+    public void resize(int width, int height)
+    {
+        viewport.update(width, height, true);
     }
 
     private void updateGround()
@@ -162,6 +187,7 @@ public class PlayState extends State
 
     public void addScore(int value){
         score += value;
+        scoreText = "" + score;
     }
 
 }

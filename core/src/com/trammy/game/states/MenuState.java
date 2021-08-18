@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -22,30 +23,24 @@ import com.trammy.game.JumpyFruits;
 
 public class MenuState extends State
 {
-    private Texture background;
-    private Texture playBtn;
+    private Texture backgroundImg, playBtnImg, charactersImg, mapImg;
     private Stage stage;
-    private TextureRegion playBtnTextureRegion;
-    private TextureRegionDrawable playBtnTextureDrawable;
-    private ImageButton playButton;
+    private ImageButton playButton, charactersButton, mapButton;
 
 
     public MenuState(GameStateManager gsm)
     {
         super(gsm);
-        cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
-        background = new Texture("bgff2.png");
-        createButton();
+        cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
+        backgroundImg = new Texture("bgnight.png");
+        createButtons();
     }
 
-    public void createButton()
+    public void createButtons()
     {
-        playBtn = new Texture("playbtn.png");
-        playBtnTextureRegion = new TextureRegion(playBtn);
-        playBtnTextureDrawable = new TextureRegionDrawable(playBtnTextureRegion);
-        playButton = new ImageButton(playBtnTextureDrawable);
-        playButton.setPosition(cam.position.x- (playBtn.getWidth() / 2.0f), cam.position.y);
-
+        playBtnImg = new Texture("playbtn.png");
+        playButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(playBtnImg)));
+        playButton.setPosition(cam.position.x- (playBtnImg.getWidth() / 2.0f), cam.position.y);
         playButton.addListener( new InputListener()
         {
             @Override
@@ -62,29 +57,60 @@ public class MenuState extends State
 
             }
         });
+
+        charactersImg = new Texture("characterbtn.png");
+        charactersButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(charactersImg)));
+        charactersButton.setPosition(playButton.getX(), cam.position.y - playBtnImg.getHeight() + 10);
+        charactersButton.addListener(new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+        mapImg = new Texture("mapbtn.png");
+        mapButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(mapImg)));
+        mapButton.setPosition(playButton.getX(), cam.position.y - playBtnImg.getHeight() * 2 + 20);
+        mapButton.addListener(new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
         stage = new Stage(viewport, gsm.getBatch());
         stage.addActor(playButton);
+        stage.addActor(charactersButton);
+        stage.addActor(mapButton);
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void handleInput()
     {
-        /**Vector3 mousePosition = new Vector3( Gdx.input.getX(),Gdx.input.getY(),0);
-        mousePosition = cam.unproject(mousePosition);
-        boolean isInXOfBtn = cam.position.x - (playBtn.getWidth() / 2.0f) <= mousePosition.x && mousePosition.x <= ( cam.position.x - (playBtn.getWidth() / 2.0f) ) + playBtn.getWidth();
-        boolean isInYOfBtn = ( cam.position.y <= mousePosition.y ) && mousePosition.y <= cam.position.y + playBtn.getHeight();
-        System.out.println(mousePosition.x + "----" + mousePosition.y);
-        if(Gdx.input.isTouched() && isInXOfBtn && isInYOfBtn )
-        {
-            gsm.set(new PlayState(gsm));
-        }*/
+
     }
 
     @Override
     public void update(float dt)
     {
-        //handleInput();
+
     }
 
     @Override
@@ -92,20 +118,18 @@ public class MenuState extends State
     {
         cam.update();
         sb.setProjectionMatrix(cam.combined);
+        stage.act(Gdx.graphics.getDeltaTime());
         sb.begin();
-        sb.draw(background, 0, 0);
-        //sb.draw(playBtn, cam.position.x - (playBtn.getWidth() / 2.0f), cam.position.y );
+        sb.draw(backgroundImg, 0, 0);
         sb.end();
-        stage.act();
         stage.draw();
-
     }
 
     @Override
     public void dispose()
     {
-        background.dispose();
-        playBtn.dispose();
+        backgroundImg.dispose();
+        //playBtn.dispose();
         stage.dispose();
         System.out.println("Menu State Disposed");
     }
@@ -113,7 +137,8 @@ public class MenuState extends State
     @Override
     public void resize(int width, int height)
     {
-        super.resize(width, height);
-        stage.getViewport().update(width,height,true);
+        viewport.update(width, height, true);
+        //stage.getCamera().position.set(JumpyFruits.WIDTH/2.0f,JumpyFruits.HEIGHT/2.0f,0);
+        stage.getCamera().update();
     }
 }

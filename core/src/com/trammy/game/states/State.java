@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FillViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.trammy.game.JumpyFruits;
 
@@ -14,13 +17,13 @@ public abstract class State
     protected OrthographicCamera cam;
     protected Vector3 mouse;
     protected GameStateManager gsm;
-    protected Viewport viewport;
+    protected ExtendViewport viewport;
 
     protected State( GameStateManager gsm )
     {
         this.gsm = gsm;
-        cam = new OrthographicCamera();
-        viewport = new ExtendViewport(JumpyFruits.WIDTH/2, JumpyFruits.HEIGHT/2,cam);
+        cam = new OrthographicCamera(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+        viewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,cam);
         mouse = new Vector3();
 
     }
@@ -29,9 +32,6 @@ public abstract class State
     public abstract void update( float dt );
     public abstract void render( SpriteBatch sb );
     public abstract void dispose();
-    public void resize(int width, int height)
-    {
-        viewport.update(width, height);
-    }
+    public abstract void resize(int width, int height);
 
 }
