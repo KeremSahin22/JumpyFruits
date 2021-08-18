@@ -7,30 +7,39 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-public class Watermelon
+public class Character
 {
     private static final int GRAVITY = -15;
     private static final int MOVEMENT = 100;
     private Vector3 position;
     private Vector3 velocity;
     private Rectangle bounds;
-    private Animation watermelonAnimation;
+    private Animation charAnimation;
     private Texture texture;
     private Sound sound;
 
-    public Watermelon(int x, int y)
+    public Character(int x, int y, String charName)
     {
         position = new Vector3(x, y, 0);
         velocity = new Vector3(0, 0, 0);
-        texture = new Texture("wmanimation3.png");
-        watermelonAnimation = new Animation(texture, 3, 0.5f);
+        chooseTexture(charName);
         bounds = new Rectangle(x, y, texture.getWidth() / 3.0f, texture.getHeight());
         sound = Gdx.audio.newSound(Gdx.files.internal("sfx_wing.ogg"));
     }
 
+    public void chooseTexture(String charName){
+        if(charName.equals("watermelon") || charName.equals("")) {
+            texture = new Texture("wmanimation3.png");
+            charAnimation = new Animation(texture, 3,0.5f);
+        }
+        else {
+            texture = new Texture("kiwianimation.png");
+            charAnimation = new Animation(texture, 2, 0.5f);
+        }
+    }
     public void update(float dt)
     {
-        watermelonAnimation.update(dt);
+       charAnimation.update(dt);
         if( position.y > 0 )
             velocity.add(0, GRAVITY, 0);
         velocity.scl(dt);
@@ -49,7 +58,7 @@ public class Watermelon
 
     public TextureRegion getTexture()
     {
-        return watermelonAnimation.getFrame();
+        return charAnimation.getFrame();
     }
 
     public void jump()

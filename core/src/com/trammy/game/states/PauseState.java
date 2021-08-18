@@ -26,8 +26,19 @@ public class PauseState extends State{
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
 
         this.gsm = gsm;
-        bg = new Texture("bgff.png");
+        bg = new Texture("bg_grid.png");
     }
+
+    public PauseState(GameStateManager gsm, String bgName){
+        super(gsm);
+        cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
+        this.gsm = gsm;
+        if(bgName.equals(""))
+            bg = new Texture("bg_grid.png");
+        else
+            bg = new Texture(bgName);
+    }
+
     @Override
     public void handleInput() {
 
@@ -35,10 +46,6 @@ public class PauseState extends State{
 
     public void createButtons(){
 
-
-        int Help_Guides = 12;
-        int row_height = Gdx.graphics.getWidth() / 3;
-        int col_width = Gdx.graphics.getWidth() / 3;
 
         newGameBtnTexture = new Texture("newgamebtn4.png");
         Drawable newGameButtonDrawable = new TextureRegionDrawable(new TextureRegion(newGameBtnTexture));

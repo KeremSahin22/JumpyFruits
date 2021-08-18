@@ -19,8 +19,8 @@ public class Fork
 
     public Fork(float x)
     {
-        topFork = new Texture("forkTop.png");
-        bottomFork = new Texture("forkBot.png");
+        topFork = new Texture("topKnife.png");
+        bottomFork = new Texture("botKnife.png");
         rand = new Random();
 
         posTopFork = new Vector2(x, rand.nextInt(FLUCTUATION) + TUBE_GAP + LOWEST_OPENING);
