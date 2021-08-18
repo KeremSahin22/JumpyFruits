@@ -69,15 +69,6 @@ public class PlayState extends State
         createButton();
     }
 
-    public void chooseBg(String bgName){
-        if(bgName.equals(""))
-            bg = new Texture("bg_grid.png");
-        else
-            bg = new Texture(bgName);
-    }
-    public void createButton()
-    {
-        scoreText = "" + 0;
     public PlayState(GameStateManager gsm, String charName, String bgName){
         super(gsm);
         this.bgName = bgName;
@@ -96,6 +87,15 @@ public class PlayState extends State
         }
     }
 
+    public void chooseBg(String bgName){
+        if(bgName.equals(""))
+            bg = new Texture("bg_grid.png");
+        else
+            bg = new Texture(bgName);
+    }
+    public void createButton()
+    {
+        scoreText = "" + 0;
         pauseBtnTexture = new Texture("pausebtn.png");
         Drawable pauseButtonDrawable = new TextureRegionDrawable(new TextureRegion(pauseBtnTexture));
         pauseBtn = new ImageButton(pauseButtonDrawable);
@@ -115,7 +115,7 @@ public class PlayState extends State
         //JumpyFruits.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         labelStyle = new Label.LabelStyle(JumpyFruits.font, Color.WHITE);
         scoreLabel = new Label(scoreText, labelStyle);
-        scoreLabel.setPosition(Gdx.graphics.getWidth()/2.0f - scoreLabel.getWidth()/2,Gdx.graphics.getHeight()*((float)7/8));
+        scoreLabel.setPosition(Gdx.graphics.getWidth()/2.0f - scoreLabel.getWidth()/2.0f,Gdx.graphics.getHeight()*((float)7/8));
         scoreLabel.setFontScale(4);
         hudStage = new Stage(hudViewport,gsm.getBatch());
         hudStage.addActor(pauseBtn);
@@ -159,13 +159,6 @@ public class PlayState extends State
             gsm.set(new PlayState(gsm));
         cam.update();
 
-    }
-
-    @Override
-    public void handleInput()
-    {
-        if(Gdx.input.justTouched())
-            watermelon.jump();
     }
 
     @Override

@@ -32,7 +32,7 @@ public class MenuState extends State
     {
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
-        backgroundImg = new Texture("bgnight.png");
+        backgroundImg = new Texture("bg_grid.png");
         createButtons();
     }
 
@@ -60,7 +60,7 @@ public class MenuState extends State
 
         charactersImg = new Texture("characterbtn.png");
         charactersButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(charactersImg)));
-        charactersButton.setPosition(playButton.getX(), cam.position.y - playBtnImg.getHeight() + 10);
+        charactersButton.setPosition(cam.position.x - charactersImg.getWidth()/2.0f, cam.position.y - 60);
         charactersButton.addListener(new InputListener()
         {
             @Override
@@ -78,7 +78,7 @@ public class MenuState extends State
 
         mapImg = new Texture("mapbtn.png");
         mapButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(mapImg)));
-        mapButton.setPosition(playButton.getX(), cam.position.y - playBtnImg.getHeight() * 2 + 20);
+        mapButton.setPosition(cam.position.x - mapImg.getWidth()/2.0f, cam.position.y - 100 );
         mapButton.addListener(new InputListener()
         {
             @Override

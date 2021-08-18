@@ -119,7 +119,7 @@ public class PauseState extends State{
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
         sb.begin();
-        //sb.draw(bg, 0, 0);
+        sb.draw(bg, 0, 0);
         sb.end();
         createButtons();
         stage.act();
