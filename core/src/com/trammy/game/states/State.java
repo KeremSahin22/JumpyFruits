@@ -22,7 +22,7 @@ public abstract class State
     protected State( GameStateManager gsm )
     {
         this.gsm = gsm;
-        cam = new OrthographicCamera(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+        cam = new OrthographicCamera();
         viewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,cam);
         mouse = new Vector3();
 

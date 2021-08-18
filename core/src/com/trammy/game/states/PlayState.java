@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.trammy.game.JumpyFruits;
@@ -41,7 +43,7 @@ public class PlayState extends State
     private Stage hudStage;
     private ImageButton pauseBtn;
     private OrthographicCamera hudCam;
-    private ScreenViewport hudViewport;
+    private ExtendViewport hudViewport;
 
 
    public PlayState(GameStateManager gsm)
@@ -50,11 +52,12 @@ public class PlayState extends State
         chooseBg(bgName);
         character = new Character(50,300, "");
         score = 0;
-        hudCam = new OrthographicCamera(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
-        hudCam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
-        hudViewport = new ScreenViewport(hudCam);
 
+        hudCam = new OrthographicCamera();
+        hudCam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+        hudViewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,hudCam);
         cam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+
         forks = new Array<Fork>();
 
         ground = new Texture("groundjf.png");
@@ -66,24 +69,22 @@ public class PlayState extends State
             forks.add(new Fork(i * (KNIFE_SPACING + Fork.KNIFE_WIDTH)));
         }
 
-        createButton();
+        createButtons();
     }
 
     public PlayState(GameStateManager gsm, String charName, String bgName){
         super(gsm);
         this.bgName = bgName;
         chooseBg(bgName);
+        score = 0;
         character = new Character(50,300,charName);
 
         hudCam = new OrthographicCamera(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
         hudCam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
-        hudViewport = new ScreenViewport(hudCam);
+        hudViewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,hudCam);
+        cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
 
-        cam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
         forks = new Array<Fork>();
-
-        score = 0;
-
         ground = new Texture("groundjf.png");
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
@@ -92,7 +93,7 @@ public class PlayState extends State
         {
             forks.add(new Fork(i * (KNIFE_SPACING + Fork.KNIFE_WIDTH)));
         }
-        createButton();
+        createButtons();
     }
 
     public void chooseBg(String bgName){
@@ -101,14 +102,13 @@ public class PlayState extends State
         else
             bg = new Texture(bgName);
     }
-    public void createButton()
+    public void createButtons()
     {
         scoreText = "" + 0;
         pauseBtnTexture = new Texture("pausebtn.png");
         Drawable pauseButtonDrawable = new TextureRegionDrawable(new TextureRegion(pauseBtnTexture));
         pauseBtn = new ImageButton(pauseButtonDrawable);
-        pauseBtn.setSize(pauseBtnTexture.getWidth(), pauseBtnTexture.getHeight());
-        pauseBtn.setPosition(Gdx.graphics.getWidth() - pauseBtnTexture.getWidth() -25 ,Gdx.graphics.getHeight() - pauseBtnTexture.getHeight() - 25);
+        pauseBtn.setPosition(cam.viewportWidth - pauseBtnTexture.getWidth()*1.2f,cam.viewportHeight);
         pauseBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -123,8 +123,8 @@ public class PlayState extends State
         //JumpyFruits.font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         labelStyle = new Label.LabelStyle(JumpyFruits.font, Color.WHITE);
         scoreLabel = new Label(scoreText, labelStyle);
-        scoreLabel.setPosition(Gdx.graphics.getWidth()/2.0f - scoreLabel.getWidth()/2.0f,Gdx.graphics.getHeight()*((float)7/8));
-        scoreLabel.setFontScale(4);
+        scoreLabel.setPosition(hudCam.position.x - scoreLabel.getWidth()/2,cam.viewportHeight*0.85f);
+        scoreLabel.setFontScale(0.8f);
         hudStage = new Stage(hudViewport,gsm.getBatch());
         hudStage.addActor(pauseBtn);
         hudStage.addActor(scoreLabel);
