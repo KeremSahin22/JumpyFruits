@@ -59,7 +59,7 @@ public class PauseState extends State{
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new PlayState(gsm));
+                gsm.set(new PlayState(gsm,"",""));
                 return true;
             }
         });
