@@ -59,6 +59,7 @@ public class PlayState extends State
         obstacles = new Array<Obstacle>();
 
         ground = new Texture("groundjf.png");
+        System.out.println(ground.getHeight());
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
 
@@ -115,11 +116,12 @@ public class PlayState extends State
         pauseBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("Press a Button");
+                gsm.push(new PauseState(gsm, bgName));
+                pauseBtn.setChecked(false);
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.push(new PauseState(gsm, charName, bgName));
+
                 return true;
             }
         });

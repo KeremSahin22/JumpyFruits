@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -44,7 +46,7 @@ public class MenuState extends State
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
         popUpBg= new Texture("popupbg.png");
-        backgroundImg = new Texture("bg_grid.png");
+        backgroundImg = new Texture("sunnybg.png");
         createWindows();
         createButtons();
         //opUp.set
@@ -78,6 +80,7 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
+                stage.addAction(Actions.fadeOut(1));
                 gsm.set(new PlayState(gsm,"kiwi",""));
             }
         });
@@ -295,7 +298,7 @@ public class MenuState extends State
         sb.setProjectionMatrix(cam.combined);
         stage.act(Gdx.graphics.getDeltaTime());
         sb.begin();
-        sb.draw(backgroundImg, 0, 0);
+        sb.draw(backgroundImg, -15, -10);
         sb.end();
         stage.draw();
     }
