@@ -31,12 +31,12 @@ public class PlayState extends State
     private static final int KNIFE_COUNT = 4;
     private static final int GROUND_Y_OFFSET = -50;
     private int score;
-    private String scoreText;
+    private String scoreText, charName;
+    private String bgName;
     private Label scoreLabel;
     private Label.LabelStyle labelStyle;
     private Texture bg, ground, pauseBtnTexture;
     private Character character;
-    private String bgName = "";
     private Array<Fork> forks;
     private double oldForkPos = 0;
     private Vector2 groundPos1, groundPos2;
@@ -49,8 +49,10 @@ public class PlayState extends State
    public PlayState(GameStateManager gsm)
     {
         super(gsm);
+        bgName = "";
+        charName = "";
         chooseBg(bgName);
-        character = new Character(50,300, "");
+        character = new Character(50,300, charName);
         score = 0;
 
         hudCam = new OrthographicCamera();
@@ -75,9 +77,10 @@ public class PlayState extends State
     public PlayState(GameStateManager gsm, String charName, String bgName){
         super(gsm);
         this.bgName = bgName;
+        this.charName = charName;
         chooseBg(bgName);
         score = 0;
-        character = new Character(50,300,charName);
+        character = new Character(50,300,this.charName);
 
         hudCam = new OrthographicCamera(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
         hudCam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
@@ -160,7 +163,7 @@ public class PlayState extends State
             }
 
             if(fork.collides(character.getBounds()))
-                gsm.set(new PlayState(gsm));
+                gsm.set(new PlayState(gsm,charName,bgName));
         }
 
         if (character.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)

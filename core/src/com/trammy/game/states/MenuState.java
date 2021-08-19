@@ -2,6 +2,7 @@ package com.trammy.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,9 +33,9 @@ import com.trammy.game.JumpyFruits;
 
 public class MenuState extends State
 {
-    private Texture backgroundImg, playBtnImg, charactersImg, mapImg, popUpBg, wmButtonImg;
+    private Texture backgroundImg, playBtnImg, charactersImg, mapImg, popUpBg, wmButtonImg, charCloseImg;
     private Stage stage, wStage;
-    private ImageButton playButton, charactersButton, mapButton, wmButton;
+    private ImageButton playButton, charactersButton, mapButton, wmButton, charCloseButton, kiwiButton, bananaButton;
     private Window popUpChar, popUpMap;
 
 
@@ -46,8 +47,6 @@ public class MenuState extends State
         backgroundImg = new Texture("bg_grid.png");
         createWindows();
         createButtons();
-
-
         //opUp.set
     }
 
@@ -56,20 +55,18 @@ public class MenuState extends State
         Window.WindowStyle windowStyle = new Window.WindowStyle(JumpyFruits.font, Color.BLACK, new TextureRegionDrawable(new TextureRegion(popUpBg)));
         popUpChar = new Window("", windowStyle);
         popUpChar.setVisible(false);
-        popUpChar.setSize(250,200);
+        popUpChar.setSize(popUpBg.getWidth(),popUpBg.getHeight());
         popUpChar.setPosition(cam.position.x- (popUpChar.getWidth() / 2.0f), cam.position.y);
         popUpChar.setClip(false);
         popUpChar.setTransform(true);
+
         wmButtonImg = new Texture("wmk.png");
         wmButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(wmButtonImg)));
-        wmButton.setPosition(popUpChar.getX()  , popUpChar.getY() );
         wmButton.addListener( new InputListener()
         {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                popUpChar.setVisible(false);
-                gsm.set(new PlayState(gsm,"kiwi",""));
                 return true;
             }
 
@@ -77,18 +74,41 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
-
+                popUpChar.setVisible(false);
+                gsm.set(new PlayState(gsm,"kiwi",""));
             }
         });
 
 
-        popUpChar.add(wmButton);
 
+        charCloseImg = new Texture("closebutton.png");
+        charCloseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(charCloseImg)));
+        charCloseButton.setPosition(0,0);
+        charCloseButton.addListener(new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                super.touchUp(event, x, y, pointer, button);
+                popUpChar.setVisible(false);
+
+            }
+        });
+        popUpChar.setLayoutEnabled(false);
+        popUpChar.add(wmButton);
+        popUpChar.add(charCloseButton);
+        wmButton.setPosition(popUpChar.getWidth()*0.10f, popUpChar.getY() - popUpChar.getHeight()/2 );
+        charCloseButton.setPosition(popUpChar.getWidth() - charCloseButton.getWidth()*1.25f, popUpChar.getY()- charCloseButton.getHeight()*1.25f);
 
     }
     public void createButtons()
     {
-
         playBtnImg = new Texture("playbtn.png");
         playButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(playBtnImg)));
         playButton.setPosition(cam.position.x- (playBtnImg.getWidth() / 2.0f), cam.position.y);
@@ -117,7 +137,6 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
-                popUpChar.setVisible(true);
                 return true;
             }
 
@@ -125,6 +144,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                popUpChar.setVisible(true);
             }
         });
 
@@ -147,13 +167,11 @@ public class MenuState extends State
         });
 
         stage = new Stage(viewport, gsm.getBatch());
-
         stage.addActor(playButton);
         stage.addActor(charactersButton);
         stage.addActor(mapButton);
         stage.addActor(popUpChar);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
