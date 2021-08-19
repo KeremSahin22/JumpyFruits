@@ -32,11 +32,15 @@ public class Character
             texture = new Texture("wmanimation3.png");
             charAnimation = new Animation(texture, 3,0.5f);
         }
-        else {
+        else if(charName.equals("kiwi")){
             texture = new Texture("kiwianimation.png");
-            charAnimation = new Animation(texture, 2, 0.5f);
-        }
+            charAnimation = new Animation(texture, 2, 0.5f);}
+        else{
+            texture = new Texture("bananaanimation.png");
+            charAnimation = new Animation(texture, 3, 0.5f);}
     }
+
+
     public void update(float dt)
     {
        charAnimation.update(dt);

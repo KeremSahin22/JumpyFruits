@@ -20,7 +20,7 @@ public class PauseState extends State{
     private Texture newGameBtnTexture, resumeBtnTexture;
     private Texture bg;
     private Texture menuBtnTexture;
-
+    private String charName, bgName;
     public PauseState(GameStateManager gsm){
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
@@ -29,10 +29,13 @@ public class PauseState extends State{
         bg = new Texture("bg_grid.png");
     }
 
-    public PauseState(GameStateManager gsm, String bgName){
+    public PauseState(GameStateManager gsm, String charName, String bgName){
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2, JumpyFruits.HEIGHT / 2);
         this.gsm = gsm;
+        this.bgName = bgName;
+        this.charName = charName;
+
         if(bgName.equals(""))
             bg = new Texture("bg_grid.png");
         else
@@ -59,7 +62,7 @@ public class PauseState extends State{
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new PlayState(gsm,"",""));
+                gsm.set(new PlayState(gsm,charName,bgName));
                 return true;
             }
         });

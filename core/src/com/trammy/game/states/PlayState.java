@@ -7,22 +7,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.trammy.game.JumpyFruits;
-import com.trammy.game.sprites.Fork;
+import com.trammy.game.sprites.Obstacle;
 import com.trammy.game.sprites.Character;
 
 public class PlayState extends State
@@ -32,12 +27,12 @@ public class PlayState extends State
     private static final int GROUND_Y_OFFSET = -50;
     private int score;
     private String scoreText, charName;
-    private String bgName;
+    private String bgName, obsName;
     private Label scoreLabel;
     private Label.LabelStyle labelStyle;
     private Texture bg, ground, pauseBtnTexture;
     private Character character;
-    private Array<Fork> forks;
+    private Array<Obstacle> obstacles;
     private double oldForkPos = 0;
     private Vector2 groundPos1, groundPos2;
     private Stage hudStage;
@@ -51,6 +46,7 @@ public class PlayState extends State
         super(gsm);
         bgName = "";
         charName = "";
+        obsName = "";
         chooseBg(bgName);
         character = new Character(50,300, charName);
         score = 0;
@@ -60,7 +56,7 @@ public class PlayState extends State
         hudViewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,hudCam);
         cam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
 
-        forks = new Array<Fork>();
+        obstacles = new Array<Obstacle>();
 
         ground = new Texture("groundjf.png");
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
@@ -68,7 +64,7 @@ public class PlayState extends State
 
         for(int i = 1; i <= KNIFE_COUNT; i++)
         {
-            forks.add(new Fork(i * (KNIFE_SPACING + Fork.KNIFE_WIDTH)));
+            obstacles.add(new Obstacle(i * (KNIFE_SPACING + Obstacle.KNIFE_WIDTH), obsName));
         }
 
         createButtons();
@@ -87,23 +83,27 @@ public class PlayState extends State
         hudViewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,hudCam);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
 
-        forks = new Array<Fork>();
+        obstacles = new Array<Obstacle>();
         ground = new Texture("groundjf.png");
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
 
         for(int i = 1; i <= KNIFE_COUNT; i++)
         {
-            forks.add(new Fork(i * (KNIFE_SPACING + Fork.KNIFE_WIDTH)));
+            obstacles.add(new Obstacle(i * (KNIFE_SPACING + Obstacle.KNIFE_WIDTH), obsName));
         }
         createButtons();
     }
 
     public void chooseBg(String bgName){
-        if(bgName.equals(""))
+        if(bgName.equals("") || bgName.equals("bg_grid.png")) {
             bg = new Texture("bg_grid.png");
-        else
+            obsName = "knife";
+        }
+        else {
             bg = new Texture(bgName);
+            obsName = "fork";
+        }
     }
     public void createButtons()
     {
@@ -119,7 +119,7 @@ public class PlayState extends State
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.push(new PauseState(gsm, bgName));
+                gsm.push(new PauseState(gsm, charName, bgName));
                 return true;
             }
         });
@@ -147,27 +147,27 @@ public class PlayState extends State
         updateGround();
         character.update(dt);
         cam.position.x = character.getPosition().x + 80;
-        for (int i = 0; i < forks.size; i++)
+        for (int i = 0; i < obstacles.size; i++)
         {
-            Fork fork = forks.get(i);
+            Obstacle obstacle = obstacles.get(i);
 
-            if( cam.position.x - (cam.viewportWidth / 2) > fork.getPosTopFork().x + fork.getTopFork().getWidth() )
-                fork.reposition(fork.getPosTopFork().x + ((Fork.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
+            if( cam.position.x - (cam.viewportWidth / 2) > obstacle.getPosTopObstacle().x + obstacle.getTopObstacle().getWidth() )
+                obstacle.reposition(obstacle.getPosTopObstacle().x + ((Obstacle.KNIFE_WIDTH + KNIFE_SPACING) * KNIFE_COUNT));
 
 
-            if(character.getPosition().x >= (fork.getPosTopFork().x + fork.getTopFork().getWidth()) && oldForkPos != fork.getPosTopFork().x + fork.getTopFork().getWidth()  ) {
+            if(character.getPosition().x >= (obstacle.getPosTopObstacle().x + obstacle.getTopObstacle().getWidth()) && oldForkPos != obstacle.getPosTopObstacle().x + obstacle.getTopObstacle().getWidth()  ) {
                 addScore(1);
                 scoreLabel.setText(scoreText);
-                oldForkPos = fork.getPosTopFork().x + fork.getTopFork().getWidth();
+                oldForkPos = obstacle.getPosTopObstacle().x + obstacle.getTopObstacle().getWidth();
 
             }
 
-            if(fork.collides(character.getBounds()))
+            if(obstacle.collides(character.getBounds()))
                 gsm.set(new PlayState(gsm,charName,bgName));
         }
 
         if (character.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
-            gsm.set(new PlayState(gsm));
+            gsm.set(new PlayState(gsm, charName, bgName));
         cam.update();
 
     }
@@ -181,10 +181,10 @@ public class PlayState extends State
         sb.draw(character.getTexture(), character.getPosition().x, character.getPosition().y);
         sb.draw(ground, groundPos1.x, groundPos1.y);
         sb.draw(ground, groundPos2.x, groundPos2.y);
-        for ( Fork fork : forks )
+        for ( Obstacle obstacle : obstacles)
         {
-            sb.draw(fork.getTopFork(), fork.getPosTopFork().x, fork.getPosTopFork().y);
-            sb.draw(fork.getBottomFork(), fork.getPosBotFork().x, fork.getPosBotFork().y);
+            sb.draw(obstacle.getTopObstacle(), obstacle.getPosTopObstacle().x, obstacle.getPosTopObstacle().y);
+            sb.draw(obstacle.getBottomObstacle(), obstacle.getPosBotObstacle().x, obstacle.getPosBotObstacle().y);
         }
         sb.end();
         hudStage.act();
@@ -198,8 +198,8 @@ public class PlayState extends State
         bg.dispose();
         character.dispose();
         ground.dispose();
-        for( Fork fork : forks )
-            fork.dispose();
+        for( Obstacle obstacle : obstacles)
+            obstacle.dispose();
         System.out.println("Play State Disposed");
         hudStage.dispose();
     }
