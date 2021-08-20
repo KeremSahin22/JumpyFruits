@@ -116,7 +116,7 @@ public class PlayState extends State
         pauseBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.push(new PauseState(gsm, bgName));
+                gsm.push(new PauseState(gsm, charName, bgName));
                 pauseBtn.setChecked(false);
             }
             @Override
