@@ -117,7 +117,7 @@ public class PlayState extends State
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 gsm.push(new PauseState(gsm, charName, bgName));
-                pauseBtn.setChecked(false);
+
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -138,7 +138,7 @@ public class PlayState extends State
     @Override
     public void handleInput()
     {
-        if(Gdx.input.justTouched())
+        if(Gdx.input.justTouched() && !pauseBtn.isPressed())
             character.jump();
     }
 

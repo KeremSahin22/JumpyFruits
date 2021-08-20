@@ -35,28 +35,28 @@ import com.trammy.game.JumpyFruits;
 
 public class MenuState extends State
 {
-    private Texture backgroundImg, playBtnImg, charactersImg, mapImg, popUpBg, wmButtonImg, bananaButtonImg, kiwiButtonImg, charCloseImg, nightBgImg, gridBgImg;
+    private Texture playBtnImg, charactersImg, mapImg, popUpBg, wmButtonImg, bananaButtonImg, kiwiButtonImg, charCloseImg, nightBgImg, gridBgImg;
     private Stage stage, wStage;
-    private ImageButton playButton, charactersButton, mapButton, wmButton, charCloseButton, kiwiButton, bananaButton, nightBgButton, gridBgButton;
+    private ImageButton playButton, charactersButton, mapButton, wmButton, charCloseButton, kiwiButton, bananaButton, nightBgButton, gridBgButton, mapCloseButton;
     private Window popUpChar, popUpMap;
+    private Image backgroundImg;
 
 
     public MenuState(GameStateManager gsm)
     {
         super(gsm);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
-        popUpBg= new Texture("popupbg.png");
-        backgroundImg = new Texture("sunnybg.png");
+        backgroundImg = new Image(new Texture("sunnybg.png"));
+        backgroundImg.setPosition(0,0);
         createWindows();
         createButtons();
         //opUp.set
     }
 
     public void createWindows(){
-
-        Window.WindowStyle windowStyle = new Window.WindowStyle(JumpyFruits.font, Color.BLACK, new TextureRegionDrawable(new TextureRegion(popUpBg)));
-
         // creating character window
+        popUpBg= new Texture("popupbg.png");
+        Window.WindowStyle windowStyle = new Window.WindowStyle(JumpyFruits.font, Color.BLACK, new TextureRegionDrawable(new TextureRegion(popUpBg)));
         popUpChar = new Window("", windowStyle);
         popUpChar.setVisible(false);
         popUpChar.setSize(popUpBg.getWidth(),popUpBg.getHeight());
@@ -80,7 +80,6 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
-                stage.addAction(Actions.fadeOut(1));
                 gsm.set(new PlayState(gsm,"kiwi",""));
             }
         });
@@ -126,10 +125,9 @@ public class MenuState extends State
         });
 
 
-
+        //close button for the character pop up screen
         charCloseImg = new Texture("closebutton.png");
         charCloseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(charCloseImg)));
-        charCloseButton.setPosition(0,0);
         charCloseButton.addListener(new InputListener()
         {
             @Override
@@ -142,10 +140,19 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
-                popUpChar.setVisible(false);
-
+                popUpChar.getColor().a=1;
+                popUpChar.clearActions();
+                popUpChar.addAction(Actions.sequence(Actions.fadeOut(0.3f), Actions.run(new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                popUpChar.setVisible(false);
+                            }
+                        })));
             }
         });
+
         // creating map window
         popUpMap = new Window("", windowStyle);
         popUpMap.setVisible(false);
@@ -193,6 +200,35 @@ public class MenuState extends State
                 gsm.set(new PlayState(gsm,"","bg_grid.png"));
             }
         });
+
+        //adding close button for the map
+        mapCloseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(charCloseImg)));
+        mapCloseButton.addListener(new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                super.touchUp(event, x, y, pointer, button);
+                popUpMap.getColor().a=1;
+                popUpMap.clearActions();
+                popUpMap.addAction(Actions.sequence(Actions.fadeOut(0.3f), Actions.run(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        popUpMap.setVisible(false);
+                    }
+                })));
+            }
+        });
+
+        //adding the items to the character pop up window
         popUpChar.setLayoutEnabled(false);
         popUpChar.add(wmButton);
         popUpChar.add(bananaButton);
@@ -201,14 +237,16 @@ public class MenuState extends State
         wmButton.setPosition(popUpChar.getWidth()*0.10f, popUpChar.getY() - popUpChar.getHeight()/2 );
         bananaButton.setPosition(wmButton.getX() + wmButton.getWidth() + 10, popUpChar.getY() - popUpChar.getHeight()/2 );
         kiwiButton.setPosition(bananaButton.getX() + bananaButton.getWidth() + 10, popUpChar.getY() - popUpChar.getHeight()/2);
+        charCloseButton.setPosition(popUpChar.getWidth() - charCloseButton.getWidth()*1.25f, popUpChar.getY()- charCloseButton.getHeight()*1.25f);
 
+        //adding the items to the map pop up window
         popUpMap.setLayoutEnabled(false);
         popUpMap.add(nightBgButton);
         popUpMap.add(gridBgButton);
+        popUpMap.add(mapCloseButton);
         nightBgButton.setPosition(popUpMap.getWidth()*0.10f, popUpMap.getY() - popUpMap.getHeight()/2);
         gridBgButton.setPosition(nightBgButton.getX() + nightBgButton.getWidth() + 10, popUpMap.getY() - popUpMap.getHeight()/2);
-        charCloseButton.setPosition(popUpChar.getWidth() - charCloseButton.getWidth()*1.25f, popUpChar.getY()- charCloseButton.getHeight()*1.25f);
-
+        mapCloseButton.setPosition(popUpMap.getWidth() - mapCloseButton.getWidth()*1.25f, popUpMap.getY()- mapCloseButton.getHeight()*1.25f);
     }
     public void createButtons()
     {
@@ -247,7 +285,10 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                popUpChar.getColor().a=0;
                 popUpChar.setVisible(true);
+                popUpChar.addAction(Actions.fadeIn(0.3f));
+
             }
         });
 
@@ -266,11 +307,14 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                popUpMap.getColor().a=0;
                 popUpMap.setVisible(true);
+                popUpMap.addAction(Actions.fadeIn(0.3f));
             }
         });
 
         stage = new Stage(viewport, gsm.getBatch());
+        stage.addActor(backgroundImg);
         stage.addActor(playButton);
         stage.addActor(charactersButton);
         stage.addActor(mapButton);
@@ -295,18 +339,14 @@ public class MenuState extends State
     public void render(SpriteBatch sb)
     {
         cam.update();
-        sb.setProjectionMatrix(cam.combined);
+        stage.getBatch().setProjectionMatrix(cam.combined);
         stage.act(Gdx.graphics.getDeltaTime());
-        sb.begin();
-        sb.draw(backgroundImg, -15, -10);
-        sb.end();
         stage.draw();
     }
 
     @Override
     public void dispose()
     {
-        backgroundImg.dispose();
         stage.dispose();
         System.out.println("Menu State Disposed");
     }
