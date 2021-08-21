@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -31,6 +32,7 @@ public class PlayState extends State
     private Label scoreLabel;
     private Label.LabelStyle labelStyle;
     private Texture bg, ground, pauseBtnTexture;
+    //private Image bgImg, groundImg, pauseBtnImg;
     private Character character;
     private Array<Obstacle> obstacles;
     private double oldForkPos = 0;
@@ -79,7 +81,7 @@ public class PlayState extends State
         score = 0;
         character = new Character(50,300,this.charName);
 
-        hudCam = new OrthographicCamera(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+        hudCam = new OrthographicCamera();
         hudCam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
         hudViewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,hudCam);
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
@@ -118,7 +120,6 @@ public class PlayState extends State
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 gsm.push(new PauseState(gsm, charName, bgName));
-
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -134,7 +135,6 @@ public class PlayState extends State
         hudStage = new Stage(hudViewport,gsm.getBatch());
         hudStage.addActor(pauseBtn);
         hudStage.addActor(scoreLabel);
-        Gdx.input.setInputProcessor(hudStage);
     }
     @Override
     public void handleInput()
@@ -168,12 +168,10 @@ public class PlayState extends State
             if(obstacle.collides(character.getBounds()))
                 gsm.set(new PlayState(gsm,charName,bgName));
         }
-
         if (character.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
             gsm.set(new PlayState(gsm, charName, bgName));
         cam.update();
         Gdx.input.setInputProcessor(hudStage);
-
     }
 
     @Override
