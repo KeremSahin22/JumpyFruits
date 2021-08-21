@@ -254,9 +254,9 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpMap.setVisible(false);
-                bgName = "sunnybg.png";
-                backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
+                gsm.set(new PlayState(gsm,"","sunnybg.png"));
                 opaqueBg.setVisible(false);
+
             }
         });
 
