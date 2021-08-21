@@ -70,6 +70,8 @@ public class MenuState extends State
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
         backgroundImg = new Image(new Texture(bgName));
         backgroundImg.setPosition(0,0);
+        opaqueBg = new Image(new Texture("opaqueBg.png"));
+        opaqueBg.setVisible(false);
         createWindows();
         createButtons();
     }
@@ -103,6 +105,7 @@ public class MenuState extends State
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
                 charName = "watermelon";
+                opaqueBg.setVisible(false);
                 //gsm.set(new PlayState(gsm,"watermelon",bgName));
             }
         });
@@ -124,6 +127,7 @@ public class MenuState extends State
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
                 charName = "banana";
+                opaqueBg.setVisible(false);
                 //gsm.set(new PlayState(gsm,"banana",bgName));
             }
         });
@@ -145,6 +149,7 @@ public class MenuState extends State
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
                 charName = "kiwi";
+                opaqueBg.setVisible(false);
                 //gsm.set(new PlayState(gsm,charName,bgName));
             }
         });
@@ -176,7 +181,6 @@ public class MenuState extends State
                             }
                         })));
                 opaqueBg.setVisible(false);
-
             }
         });
 
@@ -208,6 +212,7 @@ public class MenuState extends State
                 popUpMap.setVisible(false);
                 bgName = "bgnight.png";
                 backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
+                opaqueBg.setVisible(false);
             }
         });
 
@@ -229,6 +234,7 @@ public class MenuState extends State
                 popUpMap.setVisible(false);
                 bgName = "bg_grid.png";
                 backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
+                opaqueBg.setVisible(false);
             }
         });
 
@@ -248,7 +254,9 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpMap.setVisible(false);
-                gsm.set(new PlayState(gsm,"","sunnybg.png"));
+                bgName = "sunnybg.png";
+                backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
+                opaqueBg.setVisible(false);
             }
         });
 
