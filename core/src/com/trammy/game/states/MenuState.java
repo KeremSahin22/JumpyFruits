@@ -2,12 +2,15 @@ package com.trammy.game.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -35,9 +38,10 @@ import com.trammy.game.JumpyFruits;
 
 public class MenuState extends State
 {
-    private Texture playBtnImg, charactersImg, mapImg, popUpBg, wmButtonImg, bananaButtonImg, kiwiButtonImg, charCloseImg, nightBgImg, gridBgImg;
-    private Stage stage, wStage;
-    private ImageButton playButton, charactersButton, mapButton, wmButton, charCloseButton, kiwiButton, bananaButton, nightBgButton, gridBgButton, mapCloseButton;
+    private Texture playBtnImg, charactersImg, mapImg, popUpBg, wmButtonImg, bananaButtonImg, kiwiButtonImg, charCloseImg, nightBgImg, gridBgImg, sunnyBgImg;
+    private Stage stage;
+    private ImageButton playButton, charactersButton, mapButton, wmButton, charCloseButton, kiwiButton, bananaButton, nightBgButton, gridBgButton, mapCloseButton, sunnyBgButton;
+    private Image opaqueBg;
     private Window popUpChar, popUpMap;
     private Image backgroundImg;
 
@@ -48,12 +52,15 @@ public class MenuState extends State
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
         backgroundImg = new Image(new Texture("sunnybg.png"));
         backgroundImg.setPosition(0,0);
+        opaqueBg = new Image(new Texture("opaqueBg.png"));
+        opaqueBg.setVisible(false);
         createWindows();
         createButtons();
-        //opUp.set
+
     }
 
     public void createWindows(){
+
         // creating character window
         popUpBg= new Texture("popupbg.png");
         Window.WindowStyle windowStyle = new Window.WindowStyle(JumpyFruits.font, Color.BLACK, new TextureRegionDrawable(new TextureRegion(popUpBg)));
@@ -150,6 +157,8 @@ public class MenuState extends State
                                 popUpChar.setVisible(false);
                             }
                         })));
+                opaqueBg.setVisible(false);
+
             }
         });
 
@@ -160,6 +169,8 @@ public class MenuState extends State
         popUpMap.setPosition(cam.position.x- (popUpMap.getWidth() / 2.0f), cam.position.y);
         popUpMap.setClip(false);
         popUpMap.setTransform(true);
+
+
 
         //button for night bg
         nightBgImg = new Texture("nightbgBtn.png");
@@ -201,6 +212,26 @@ public class MenuState extends State
             }
         });
 
+        //button for sunny bg
+        sunnyBgImg = new Texture("sunnybgBtn.png");
+        sunnyBgButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(sunnyBgImg)));
+        sunnyBgButton.addListener( new InputListener()
+        {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+            {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                super.touchUp(event, x, y, pointer, button);
+                popUpMap.setVisible(false);
+                gsm.set(new PlayState(gsm,"","sunnybg.png"));
+            }
+        });
+
         //adding close button for the map
         mapCloseButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(charCloseImg)));
         mapCloseButton.addListener(new InputListener()
@@ -223,8 +254,10 @@ public class MenuState extends State
                     public void run()
                     {
                         popUpMap.setVisible(false);
+
                     }
                 })));
+                opaqueBg.setVisible(false);
             }
         });
 
@@ -243,11 +276,16 @@ public class MenuState extends State
         popUpMap.setLayoutEnabled(false);
         popUpMap.add(nightBgButton);
         popUpMap.add(gridBgButton);
+        popUpMap.add(sunnyBgButton);
         popUpMap.add(mapCloseButton);
         nightBgButton.setPosition(popUpMap.getWidth()*0.10f, popUpMap.getY() - popUpMap.getHeight()/2);
         gridBgButton.setPosition(nightBgButton.getX() + nightBgButton.getWidth() + 10, popUpMap.getY() - popUpMap.getHeight()/2);
+        sunnyBgButton.setPosition(gridBgButton.getX() + nightBgButton.getWidth() + 10, popUpMap.getY() - popUpMap.getHeight()/2);
         mapCloseButton.setPosition(popUpMap.getWidth() - mapCloseButton.getWidth()*1.25f, popUpMap.getY()- mapCloseButton.getHeight()*1.25f);
-    }
+
+
+        }
+
     public void createButtons()
     {
         playBtnImg = new Texture("playbtn.png");
@@ -286,8 +324,11 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.getColor().a=0;
-                popUpChar.setVisible(true);
+                if(!popUpMap.isVisible())
+                    popUpChar.setVisible(true);
                 popUpChar.addAction(Actions.fadeIn(0.3f));
+                opaqueBg.setVisible(true);
+
 
             }
         });
@@ -308,8 +349,12 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpMap.getColor().a=0;
-                popUpMap.setVisible(true);
+                if(!popUpChar.isVisible())
+                    popUpMap.setVisible(true);
                 popUpMap.addAction(Actions.fadeIn(0.3f));
+                opaqueBg.setVisible(true);
+
+
             }
         });
 
@@ -318,6 +363,7 @@ public class MenuState extends State
         stage.addActor(playButton);
         stage.addActor(charactersButton);
         stage.addActor(mapButton);
+        stage.addActor(opaqueBg);
         stage.addActor(popUpChar);
         stage.addActor(popUpMap);
         Gdx.input.setInputProcessor(stage);
@@ -335,13 +381,16 @@ public class MenuState extends State
 
     }
 
+
     @Override
     public void render(SpriteBatch sb)
     {
+
         cam.update();
         stage.getBatch().setProjectionMatrix(cam.combined);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+
     }
 
     @Override

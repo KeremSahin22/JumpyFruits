@@ -85,7 +85,6 @@ public class PlayState extends State
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
 
         obstacles = new Array<Obstacle>();
-        ground = new Texture("groundjf.png");
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
 
@@ -100,10 +99,12 @@ public class PlayState extends State
         if(bgName.equals("") || bgName.equals("bg_grid.png")) {
             bg = new Texture("bg_grid.png");
             obsName = "knife";
+            ground = new Texture("ground3.png");
         }
         else {
             bg = new Texture(bgName);
             obsName = "fork";
+            ground = new Texture("groundjf.png");
         }
     }
     public void createButtons()
@@ -171,6 +172,7 @@ public class PlayState extends State
         if (character.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
             gsm.set(new PlayState(gsm, charName, bgName));
         cam.update();
+        Gdx.input.setInputProcessor(hudStage);
 
     }
 
@@ -189,7 +191,7 @@ public class PlayState extends State
             sb.draw(obstacle.getBottomObstacle(), obstacle.getPosBotObstacle().x, obstacle.getPosBotObstacle().y);
         }
         sb.end();
-        hudStage.act();
+        hudStage.act(Gdx.graphics.getDeltaTime());
         hudStage.draw();
 
     }
