@@ -36,21 +36,36 @@ import com.trammy.game.JumpyFruits;
 public class MenuState extends State
 {
     private Texture playBtnImg, charactersImg, mapImg, popUpBg, wmButtonImg, bananaButtonImg, kiwiButtonImg, charCloseImg, nightBgImg, gridBgImg;
-    private Stage stage, wStage;
+    private Stage stage;
     private ImageButton playButton, charactersButton, mapButton, wmButton, charCloseButton, kiwiButton, bananaButton, nightBgButton, gridBgButton, mapCloseButton;
     private Window popUpChar, popUpMap;
     private Image backgroundImg;
+    private String charName,bgName;
 
 
     public MenuState(GameStateManager gsm)
     {
         super(gsm);
+        charName = "watermelon";
+        bgName = "bgnight.png";
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
-        backgroundImg = new Image(new Texture("sunnybg.png"));
+        backgroundImg = new Image(new Texture(bgName));
         backgroundImg.setPosition(0,0);
         createWindows();
         createButtons();
         //opUp.set
+    }
+
+    public MenuState(GameStateManager gsm, String charName, String bgName)
+    {
+        super(gsm);
+        this.charName = charName;
+        this.bgName = bgName;
+        cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
+        backgroundImg = new Image(new Texture(bgName));
+        backgroundImg.setPosition(0,0);
+        createWindows();
+        createButtons();
     }
 
     public void createWindows(){
@@ -80,7 +95,8 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
-                gsm.set(new PlayState(gsm,"kiwi",""));
+                charName = "watermelon";
+                //gsm.set(new PlayState(gsm,"watermelon",bgName));
             }
         });
 
@@ -100,7 +116,8 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
-                gsm.set(new PlayState(gsm,"banana",""));
+                charName = "banana";
+                //gsm.set(new PlayState(gsm,"banana",bgName));
             }
         });
 
@@ -120,7 +137,8 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpChar.setVisible(false);
-                gsm.set(new PlayState(gsm,"kiwi",""));
+                charName = "kiwi";
+                //gsm.set(new PlayState(gsm,charName,bgName));
             }
         });
 
@@ -177,7 +195,8 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpMap.setVisible(false);
-                gsm.set(new PlayState(gsm,"","bgnight.png"));
+                bgName = "bgnight.png";
+                backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
             }
         });
 
@@ -197,7 +216,8 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpMap.setVisible(false);
-                gsm.set(new PlayState(gsm,"","bg_grid.png"));
+                bgName = "bg_grid.png";
+                backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
             }
         });
 
@@ -265,8 +285,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
-                gsm.set(new PlayState(gsm, "", ""));
-
+                gsm.set(new PlayState(gsm, charName, bgName));
             }
         });
 
