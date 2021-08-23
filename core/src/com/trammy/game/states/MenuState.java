@@ -254,9 +254,9 @@ public class MenuState extends State
             {
                 super.touchUp(event, x, y, pointer, button);
                 popUpMap.setVisible(false);
-                gsm.set(new PlayState(gsm,"","sunnybg.png"));
+                bgName = "sunnybg.png";
+                backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
                 opaqueBg.setVisible(false);
-
             }
         });
 
@@ -412,7 +412,6 @@ public class MenuState extends State
     @Override
     public void render(SpriteBatch sb)
     {
-
         cam.update();
         stage.getBatch().setProjectionMatrix(cam.combined);
         stage.act(Gdx.graphics.getDeltaTime());
