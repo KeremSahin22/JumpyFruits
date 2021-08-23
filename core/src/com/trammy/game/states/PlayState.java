@@ -1,6 +1,7 @@
 package com.trammy.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,10 +24,11 @@ import com.trammy.game.sprites.Character;
 
 public class PlayState extends State
 {
+    Preferences prefs = Gdx.app.getPreferences("game preferences");
     private static final int KNIFE_SPACING = 125;
     private static final int KNIFE_COUNT = 4;
     private static final int GROUND_Y_OFFSET = -50;
-    private int score;
+    private int score, highScore;
     private String scoreText, charName;
     private String bgName, obsName;
     private Label scoreLabel;
@@ -48,6 +50,7 @@ public class PlayState extends State
         this.charName = charName;
         chooseBg(bgName);
         score = 0;
+        highScore = 0;
         character = new Character(50,300,this.charName);
 
         hudCam = new OrthographicCamera();
@@ -135,15 +138,26 @@ public class PlayState extends State
 
             }
 
-            if(obstacle.collides(character.getBounds()))
-                gsm.set(new PlayState(gsm,charName,bgName));
+            if(obstacle.collides(character.getBounds())) {
+                saveHighScore(score);
+                gsm.set(new ScoreState(gsm, prefs, score, charName, bgName));
+            }
         }
-        if (character.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET)
-            gsm.set(new PlayState(gsm, charName, bgName));
+        if (character.getPosition().y <= ground.getHeight() + GROUND_Y_OFFSET) {
+            saveHighScore(score);
+            gsm.set(new ScoreState(gsm, prefs, score, charName, bgName));
+        }
         cam.update();
         Gdx.input.setInputProcessor(hudStage);
     }
 
+    public void saveHighScore(int score){
+       highScore = prefs.getInteger("high score");
+       if(score > highScore)
+           highScore = score;
+       prefs.putInteger("high score", highScore);
+       prefs.flush();
+    }
     @Override
     public void render(SpriteBatch sb)
     {

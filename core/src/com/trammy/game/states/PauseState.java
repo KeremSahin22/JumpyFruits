@@ -119,6 +119,7 @@ public class PauseState extends State{
         mainMenuBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
                 System.out.println("Press a Button");
             }
             @Override
