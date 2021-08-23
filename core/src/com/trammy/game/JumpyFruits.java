@@ -5,14 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.trammy.game.states.GameStateManager;
 import com.trammy.game.states.MenuState;
 
 public class JumpyFruits extends ApplicationAdapter
 {
-
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 400;
 	public static final float ASPECT_RATIO = (float) WIDTH / (float) HEIGHT;
@@ -46,9 +44,10 @@ public class JumpyFruits extends ApplicationAdapter
 	@Override
 	public void render()
 	{
+		super.render();
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.render(batch);
+		gsm.update(Gdx.graphics.getDeltaTime());
 	}
 
 	@Override
@@ -58,5 +57,4 @@ public class JumpyFruits extends ApplicationAdapter
 		music.dispose();
 		font.dispose();
 	}
-
 }

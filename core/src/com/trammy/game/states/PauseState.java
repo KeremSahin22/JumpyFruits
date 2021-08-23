@@ -78,9 +78,6 @@ public class PauseState extends State{
         popUp.setClip(false);
         popUp.setTransform(true);
 
-
-
-
         newGameBtnTexture = new Texture("newgamebtn4.png");
         Drawable newGameButtonDrawable = new TextureRegionDrawable(new TextureRegion(newGameBtnTexture));
         ImageButton newGameBtn = new ImageButton(newGameButtonDrawable);
@@ -114,8 +111,6 @@ public class PauseState extends State{
                 return true;
             }
         });
-
-
 
         menuBtnTexture = new Texture("mainmenubtn.png");
         Drawable menuButtonDrawable = new TextureRegionDrawable(new TextureRegion(menuBtnTexture));
@@ -175,5 +170,6 @@ public class PauseState extends State{
     public void resize(int width, int height)
     {
         viewport.update(width, height, true);
+        cam.update();
     }
 }

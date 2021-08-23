@@ -66,7 +66,8 @@ public class PlayState extends State
         createButtons();
     }
 
-    public void chooseBg(String bgName){
+    public void chooseBg(String bgName)
+    {
         if(bgName.equals("") || bgName.equals("bg_grid.png")) {
             bg = new Texture("bg_grid.png");
             obsName = "knife";
@@ -179,6 +180,9 @@ public class PlayState extends State
     public void resize(int width, int height)
     {
         viewport.update(width, height, true);
+        hudViewport.update(width, height,true);
+        cam.update();
+        hudCam.update();
     }
 
     private void updateGround()
