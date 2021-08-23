@@ -23,9 +23,8 @@ public abstract class State
     {
         this.gsm = gsm;
         cam = new OrthographicCamera();
-        viewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,cam);
+        viewport = new ExtendViewport(JumpyFruits.WIDTH, JumpyFruits.HEIGHT,cam);
         mouse = new Vector3();
-
     }
 
     public abstract void handleInput();

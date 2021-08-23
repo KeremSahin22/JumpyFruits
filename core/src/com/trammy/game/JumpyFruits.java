@@ -13,8 +13,8 @@ import com.trammy.game.states.MenuState;
 public class JumpyFruits extends ApplicationAdapter
 {
 
-	public static final int WIDTH = 480;
-	public static final int HEIGHT = 800;
+	public static final int WIDTH = 240;
+	public static final int HEIGHT = 400;
 	public static final float ASPECT_RATIO = (float) WIDTH / (float) HEIGHT;
 	public static final String TITLE = "Jumpy Fruits";
 	private GameStateManager gsm;
