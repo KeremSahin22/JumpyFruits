@@ -54,7 +54,7 @@ public class MenuState extends State
         bgName = "bgnight.png";
         cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
         backgroundImg = new Image(new Texture(bgName));
-        backgroundImg.setPosition(0,0);
+        backgroundImg.setPosition(0, 0);
         opaqueBg = new Image(new Texture("opaqueBg.png"));
         opaqueBg.setVisible(false);
         createWindows();
@@ -413,6 +413,8 @@ public class MenuState extends State
     public void render(SpriteBatch sb)
     {
         cam.update();
+        sb.begin();
+        sb.end();
         stage.getBatch().setProjectionMatrix(cam.combined);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
