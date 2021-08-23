@@ -52,7 +52,7 @@ public class MenuState extends State
         super(gsm);
         charName = "watermelon";
         bgName = "bgnight.png";
-        cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
+        cam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
         backgroundImg = new Image(new Texture(bgName));
         backgroundImg.setPosition(0,0);
         opaqueBg = new Image(new Texture("opaqueBg.png"));
@@ -67,7 +67,7 @@ public class MenuState extends State
         super(gsm);
         this.charName = charName;
         this.bgName = bgName;
-        cam.setToOrtho(false, JumpyFruits.WIDTH / 2.0f, JumpyFruits.HEIGHT / 2.0f);
+        cam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
         backgroundImg = new Image(new Texture(bgName));
         backgroundImg.setPosition(0,0);
         opaqueBg = new Image(new Texture("opaqueBg.png"));
