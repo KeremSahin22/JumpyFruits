@@ -412,7 +412,6 @@ public class MenuState extends State
     @Override
     public void render(SpriteBatch sb)
     {
-
         cam.update();
         stage.getBatch().setProjectionMatrix(cam.combined);
         stage.act(Gdx.graphics.getDeltaTime());
