@@ -44,6 +44,35 @@ public class PlayState extends State
     private OrthographicCamera hudCam;
     private ExtendViewport hudViewport;
 
+
+   public PlayState(GameStateManager gsm)
+    {
+        super(gsm);
+        bgName = "";
+        charName = "";
+        chooseBg(bgName);
+        character = new Character(50,300, charName);
+        score = 0;
+
+        hudCam = new OrthographicCamera();
+        hudCam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+        hudViewport = new ExtendViewport(JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f,hudCam);
+        cam.setToOrtho(false, JumpyFruits.WIDTH/2.0f, JumpyFruits.HEIGHT/2.0f);
+
+        forks = new Array<Fork>();
+
+        ground = new Texture("groundjf.png");
+        groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
+        groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
+
+        for(int i = 1; i <= KNIFE_COUNT; i++)
+        {
+            forks.add(new Fork(i * (KNIFE_SPACING + Fork.KNIFE_WIDTH)));
+        }
+
+        createButtons();
+    }
+
     public PlayState(GameStateManager gsm, String charName, String bgName){
         super(gsm);
         this.bgName = bgName;
