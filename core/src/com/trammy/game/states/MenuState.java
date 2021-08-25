@@ -59,7 +59,6 @@ public class MenuState extends State
         opaqueBg.setVisible(false);
         createWindows();
         createButtons();
-
     }
 
     public MenuState(GameStateManager gsm, String charName, String bgName)
@@ -161,7 +160,6 @@ public class MenuState extends State
                 //gsm.set(new PlayState(gsm,charName,bgName));
             }
         });
-
 
         //close button for the character pop up screen
         charCloseImg = new Texture("closebutton.png");

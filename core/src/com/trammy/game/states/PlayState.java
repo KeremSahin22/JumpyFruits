@@ -53,15 +53,12 @@ public class PlayState extends State
         score = 0;
         highScore = 0;
         character = new Character(50,300,this.charName);
-
         hudCam = new OrthographicCamera();
         hudCam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
         hudViewport = new ExtendViewport(JumpyFruits.WIDTH, JumpyFruits.HEIGHT,hudCam);
-
         obstacles = new Array<Obstacle>();
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
-
         for(int i = 1; i <= KNIFE_COUNT; i++)
         {
             obstacles.add(new Obstacle(i * (KNIFE_SPACING + Obstacle.KNIFE_WIDTH), obsName));
@@ -71,15 +68,24 @@ public class PlayState extends State
 
     public void chooseBg(String bgName)
     {
-        if(bgName.equals("") || bgName.equals("bg_grid.png")) {
-            bg = new Texture("bg_grid.png");
-            obsName = "knife";
-            ground = new Texture("ground3.png");
-        }
-        else {
-            bg = new Texture(bgName);
-            obsName = "fork";
-            ground = new Texture("groundjf.png");
+        switch (bgName)
+        {
+            case "bg_grid.png":
+                bg = new Texture("bg_grid.png");
+                obsName = "knife";
+                ground = new Texture("ground3.png");
+                break;
+            case "sunnybg.png":
+                bg = new Texture("sunnybg.png");
+                obsName = "fork";
+                ground = new Texture("ground4.png");
+                break;
+            default:
+                bg = new Texture("bgnight.png");
+                obsName = "fork";
+                ground = new Texture("ground4.png");
+                break;
+
         }
     }
     public void createButtons()
@@ -196,9 +202,9 @@ public class PlayState extends State
     public void resize(int width, int height)
     {
         viewport.update(width, height, true);
-        hudViewport.update(width, height,true);
+        //hudViewport.update(width, height,true);
         cam.update();
-        hudCam.update();
+        //hudCam.update();
     }
 
     private void updateGround()

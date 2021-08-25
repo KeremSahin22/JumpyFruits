@@ -53,7 +53,6 @@ public class PauseState extends State{
         }
         ground.setPosition(0, -50);
         createButtons();
-
     }
 
 
