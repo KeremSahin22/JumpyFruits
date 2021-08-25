@@ -62,8 +62,8 @@ public class PauseState extends State{
 
     }
 
-    public void createButtons(){
-
+    public void createButtons()
+    {
         popUpBg= new Texture("popupbg.png");
         Window.WindowStyle windowStyle = new Window.WindowStyle(JumpyFruits.font, Color.BLACK, new TextureRegionDrawable(new TextureRegion(popUpBg)));
         popUp = new Window("", windowStyle);
@@ -88,8 +88,6 @@ public class PauseState extends State{
                 return true;
             }
         });
-
-
 
         resumeBtnTexture = new Texture("resumebtn.png");
         Drawable resumeButtonDrawable = new TextureRegionDrawable(new TextureRegion(resumeBtnTexture));

@@ -94,8 +94,9 @@ public class PlayState extends State
         pauseBtnTexture = new Texture("pausebtn.png");
         Drawable pauseButtonDrawable = new TextureRegionDrawable(new TextureRegion(pauseBtnTexture));
         pauseBtn = new ImageButton(pauseButtonDrawable);
-        pauseBtn.setPosition(cam.viewportWidth - pauseBtnTexture.getWidth()*1.2f,cam.viewportHeight);
-        pauseBtn.addListener(new InputListener(){
+        pauseBtn.setPosition(cam.viewportWidth*0.825f,cam.viewportHeight*0.910f);
+        pauseBtn.addListener(new InputListener()
+        {
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 gsm.push(new PauseState(gsm, charName, bgName));
