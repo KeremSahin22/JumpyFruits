@@ -28,8 +28,6 @@ public class PauseState extends State{
 
     public PauseState(GameStateManager gsm){
         super(gsm);
-        cam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
-
         this.gsm = gsm;
         bg = new Image(new Texture("bg_grid.png"));
         ground = new Image(new Texture("ground3.png"));
@@ -39,7 +37,6 @@ public class PauseState extends State{
 
     public PauseState(GameStateManager gsm, String charName, String bgName){
         super(gsm);
-        cam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
         this.gsm = gsm;
         this.bgName = bgName;
         this.charName = charName;

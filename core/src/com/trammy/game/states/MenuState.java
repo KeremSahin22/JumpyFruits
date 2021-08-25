@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -52,7 +53,6 @@ public class MenuState extends State
         super(gsm);
         charName = "watermelon";
         bgName = "bgnight.png";
-        cam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
         backgroundImg = new Image(new Texture(bgName));
         backgroundImg.setPosition(0, 0);
         opaqueBg = new Image(new Texture("opaqueBg.png"));
@@ -67,7 +67,6 @@ public class MenuState extends State
         super(gsm);
         this.charName = charName;
         this.bgName = bgName;
-        cam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
         backgroundImg = new Image(new Texture(bgName));
         backgroundImg.setPosition(0,0);
         opaqueBg = new Image(new Texture("opaqueBg.png"));
@@ -96,6 +95,8 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                wmButton.addAction(Actions.moveTo(wmButton.getX() + 1.5f, wmButton.getY() - 1.5f));
+
                 return true;
             }
 
@@ -103,6 +104,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                wmButton.setPosition(popUpChar.getWidth()*0.10f, popUpChar.getY() - popUpChar.getHeight()/2);
                 popUpChar.setVisible(false);
                 charName = "watermelon";
                 opaqueBg.setVisible(false);
@@ -118,6 +120,8 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                bananaButton.addAction(Actions.moveTo(bananaButton.getX() + 1.5f, bananaButton.getY() - 1.5f));
+
                 return true;
             }
 
@@ -125,6 +129,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                bananaButton.setPosition(wmButton.getX() + wmButton.getWidth() + 10, popUpChar.getY() - popUpChar.getHeight()/2);
                 popUpChar.setVisible(false);
                 charName = "banana";
                 opaqueBg.setVisible(false);
@@ -140,6 +145,8 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                kiwiButton.addAction(Actions.moveTo(kiwiButton.getX() + 1.5f, kiwiButton.getY() - 1.5f));
+
                 return true;
             }
 
@@ -147,6 +154,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                kiwiButton.setPosition(bananaButton.getX() + bananaButton.getWidth() + 10, popUpChar.getY() - popUpChar.getHeight()/2);
                 popUpChar.setVisible(false);
                 charName = "kiwi";
                 opaqueBg.setVisible(false);
@@ -163,6 +171,8 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                charCloseButton.addAction(Actions.moveTo(charCloseButton.getX() + 1.5f, charCloseButton.getY() - 1.5f));
+
                 return true;
             }
 
@@ -170,6 +180,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                charCloseButton.setPosition(popUpChar.getWidth() - charCloseButton.getWidth()*1.25f, popUpChar.getY()- charCloseButton.getHeight()*2.75f);
                 popUpChar.getColor().a=1;
                 popUpChar.clearActions();
                 popUpChar.addAction(Actions.sequence(Actions.fadeOut(0.3f), Actions.run(new Runnable()
@@ -202,6 +213,8 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                nightBgButton.addAction(Actions.moveTo(nightBgButton.getX() + 1.5f, nightBgButton.getY() - 1.5f));
+
                 return true;
             }
 
@@ -209,6 +222,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                nightBgButton.setPosition(popUpMap.getWidth()*0.10f, popUpMap.getY() - popUpMap.getHeight()/2);
                 popUpMap.setVisible(false);
                 bgName = "bgnight.png";
                 backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
@@ -224,6 +238,8 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                gridBgButton.addAction(Actions.moveTo(gridBgButton.getX() + 1.5f, gridBgButton.getY() - 1.5f));
+
                 return true;
             }
 
@@ -231,6 +247,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                gridBgButton.setPosition(nightBgButton.getX() + nightBgButton.getWidth() + 10, popUpMap.getY() - popUpMap.getHeight()/2);
                 popUpMap.setVisible(false);
                 bgName = "bg_grid.png";
                 backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
@@ -246,6 +263,7 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                sunnyBgButton.addAction(Actions.moveTo(sunnyBgButton.getX() + 1.5f, sunnyBgButton.getY() - 1.5f));
                 return true;
             }
 
@@ -253,6 +271,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                sunnyBgButton.setPosition(gridBgButton.getX() + nightBgButton.getWidth() + 10, popUpMap.getY() - popUpMap.getHeight()/2);
                 popUpMap.setVisible(false);
                 bgName = "sunnybg.png";
                 backgroundImg.setDrawable(new TextureRegionDrawable(new TextureRegion(new Texture(bgName))));
@@ -267,6 +286,7 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                mapCloseButton.addAction(Actions.moveTo(mapCloseButton.getX() + 1.5f, mapCloseButton.getY() - 1.5f));
                 return true;
             }
 
@@ -274,6 +294,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                mapCloseButton.setPosition(popUpMap.getWidth() - mapCloseButton.getWidth()*1.25f, popUpMap.getY()- mapCloseButton.getHeight()*2.75f);
                 popUpMap.getColor().a=1;
                 popUpMap.clearActions();
                 popUpMap.addAction(Actions.sequence(Actions.fadeOut(0.3f), Actions.run(new Runnable()
@@ -298,7 +319,7 @@ public class MenuState extends State
         wmButton.setPosition(popUpChar.getWidth()*0.10f, popUpChar.getY() - popUpChar.getHeight()/2 );
         bananaButton.setPosition(wmButton.getX() + wmButton.getWidth() + 10, popUpChar.getY() - popUpChar.getHeight()/2 );
         kiwiButton.setPosition(bananaButton.getX() + bananaButton.getWidth() + 10, popUpChar.getY() - popUpChar.getHeight()/2);
-        charCloseButton.setPosition(popUpChar.getWidth() - charCloseButton.getWidth()*1.25f, popUpChar.getY()- charCloseButton.getHeight()*1.25f);
+        charCloseButton.setPosition(popUpChar.getWidth() - charCloseButton.getWidth()*1.25f, popUpChar.getY()- charCloseButton.getHeight()*2.75f);
 
         //adding the items to the map pop up window
         popUpMap.setLayoutEnabled(false);
@@ -309,7 +330,7 @@ public class MenuState extends State
         nightBgButton.setPosition(popUpMap.getWidth()*0.10f, popUpMap.getY() - popUpMap.getHeight()/2);
         gridBgButton.setPosition(nightBgButton.getX() + nightBgButton.getWidth() + 10, popUpMap.getY() - popUpMap.getHeight()/2);
         sunnyBgButton.setPosition(gridBgButton.getX() + nightBgButton.getWidth() + 10, popUpMap.getY() - popUpMap.getHeight()/2);
-        mapCloseButton.setPosition(popUpMap.getWidth() - mapCloseButton.getWidth()*1.25f, popUpMap.getY()- mapCloseButton.getHeight()*1.25f);
+        mapCloseButton.setPosition(popUpMap.getWidth() - mapCloseButton.getWidth()*1.25f, popUpMap.getY()- mapCloseButton.getHeight()*2.75f);
 
 
         }
@@ -324,6 +345,7 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                playButton.addAction(Actions.moveTo(playButton.getX() + 1.5f, playButton.getY() - 1.5f));
                 return true;
             }
 
@@ -331,6 +353,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                playButton.setPosition(cam.position.x- (playBtnImg.getWidth() / 2.0f), cam.position.y);
                 gsm.set(new PlayState(gsm, charName, bgName));
             }
         });
@@ -343,6 +366,7 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                charactersButton.addAction(Actions.moveTo(charactersButton.getX() + 1.5f, charactersButton.getY() - 1.5f));
                 return true;
             }
 
@@ -350,6 +374,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                charactersButton.setPosition(cam.position.x - charactersImg.getWidth()/2.0f, cam.position.y*0.70f);
                 popUpChar.getColor().a=0;
                 if(!popUpMap.isVisible())
                     popUpChar.setVisible(true);
@@ -358,6 +383,8 @@ public class MenuState extends State
 
 
             }
+
+
         });
 
         mapImg = new Texture("mapbtn.png");
@@ -368,6 +395,7 @@ public class MenuState extends State
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
             {
+                mapButton.addAction(Actions.moveTo(mapButton.getX() + 1.5f, mapButton.getY() - 1.5f));
                 return true;
             }
 
@@ -375,6 +403,7 @@ public class MenuState extends State
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 super.touchUp(event, x, y, pointer, button);
+                mapButton.setPosition(cam.position.x - mapImg.getWidth()/2.0f, cam.position.y*0.50f);
                 popUpMap.getColor().a=0;
                 if(!popUpChar.isVisible())
                     popUpMap.setVisible(true);
@@ -383,6 +412,7 @@ public class MenuState extends State
 
 
             }
+
         });
 
         stage = new Stage(viewport, gsm.getBatch());
@@ -405,18 +435,17 @@ public class MenuState extends State
     @Override
     public void update(float dt)
     {
-
+        //buttonsTouchUp(scaleCharButton);
     }
 
 
     @Override
     public void render(SpriteBatch sb)
     {
+
         cam.update();
-        sb.begin();
-        sb.draw(backgroundImg, 0, 0);
-        sb.end();
         stage.getBatch().setProjectionMatrix(cam.combined);
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 

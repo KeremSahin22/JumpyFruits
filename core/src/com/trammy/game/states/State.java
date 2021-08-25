@@ -1,5 +1,6 @@
 package com.trammy.game.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,6 +25,8 @@ public abstract class State
         this.gsm = gsm;
         cam = new OrthographicCamera();
         viewport = new ExtendViewport(JumpyFruits.WIDTH, JumpyFruits.HEIGHT,cam);
+        cam.setToOrtho(false, JumpyFruits.WIDTH, JumpyFruits.HEIGHT);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         mouse = new Vector3();
     }
 
