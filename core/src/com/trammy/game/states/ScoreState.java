@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.trammy.game.JumpyFruits;
@@ -30,27 +31,22 @@ public class ScoreState extends State{
     private Stage stage;
 
 
-    protected ScoreState(GameStateManager gsm, Preferences prefs, int currentScore, String charName, String bgName) {
+    protected ScoreState(GameStateManager gsm, Preferences prefs, int currentScore, String charName, String bgName)
+    {
         super(gsm);
-
         this.prefs = prefs;
         this.charName = charName;
         this.bgName = bgName;
         this.currentScore = currentScore;
         highScore = prefs.getInteger("high score");
-
         highScoreText = "High Score: " + highScore;
         currentScoreText = "Current Score: " + currentScore;
+        stage = new Stage(viewport, gsm.getBatch());
         createWindow();
-
-        highScoreLabel.setText(highScoreText);
-        currentScoreLabel.setText(currentScoreText);
     }
 
-    public void createWindow(){
-
-        stage = new Stage(viewport, gsm.getBatch());
-
+    public void createWindow()
+    {
         popUpBg= new Texture("popupbg.png");
         Window.WindowStyle windowStyle = new Window.WindowStyle(JumpyFruits.font, Color.BLACK, new TextureRegionDrawable(new TextureRegion(popUpBg)));
         popUp = new Window("", windowStyle);
@@ -76,55 +72,60 @@ public class ScoreState extends State{
         mainMenuBtn.setSize(menuBtnTexture.getWidth(), menuBtnTexture.getHeight());
         mainMenuBtn.setPosition(cam.position.x - mainMenuBtn.getWidth()/2 , popUp.getY() - mainMenuBtn.getHeight() - 20);
 
-        mainMenuBtn.addListener(new InputListener(){
+        System.out.println("ANANIZISSSS");
+        mainMenuBtn.addListener(new ClickListener()
+        {
             @Override
-            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button)
+            {
                 super.touchUp(event, x, y, pointer, button);
                 System.out.println("Press a Button");
+                gsm.set(new MenuState(gsm,charName,bgName));
             }
             @Override
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new MenuState(gsm,charName,bgName));
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
+            {
                 return true;
             }
         });
-
-
         popUp.setLayoutEnabled(false);
         popUp.add(highScoreLabel);
         popUp.add(currentScoreLabel);
-
         stage.addActor(popUp);
         stage.addActor(mainMenuBtn);
+        highScoreLabel.setText(highScoreText);
+        currentScoreLabel.setText(currentScoreText);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override
-    public void handleInput() {
-
+    public void handleInput()
+    {
     }
 
     @Override
-    public void update(float dt) {
-        cam.update();
+    public void update(float dt)
+    {
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.setProjectionMatrix(cam.combined);
-        stage.act();
+        stage.getBatch().setProjectionMatrix(cam.combined);
+        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         stage.dispose();
-
     }
 
     @Override
-    public void resize(int width, int height) {
-
+    public void resize(int width, int height)
+    {
+        viewport.update(width, height, true);
+        cam.update();
     }
 }
