@@ -43,8 +43,6 @@ public class PlayState extends State
     private OrthographicCamera hudCam;
     private ExtendViewport hudViewport;
 
-
-
     public PlayState(GameStateManager gsm, String charName, String bgName){
         super(gsm);
         this.bgName = bgName;
