@@ -144,7 +144,7 @@ public class PauseState extends State{
         popUp.add(resumeBtn);
         popUp.add(mainMenuBtn);
 
-        newGameBtn.setPosition(popUp.getWidth()*0.27f, popUp.getY() - popUp.getHeight()/1.75f);
+        newGameBtn.setPosition(popUp.getWidth()*0.27f, popUp.getY()/1.75f);
         resumeBtn.setPosition(popUp.getWidth()*0.27f, newGameBtn.getY() - newGameBtn.getHeight() - 12);
         mainMenuBtn.setPosition(popUp.getWidth()*0.27f, resumeBtn.getY() -  resumeBtn.getHeight() - 12);
 
