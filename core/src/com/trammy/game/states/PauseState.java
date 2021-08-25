@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -24,6 +25,7 @@ public class PauseState extends State{
     private Window popUp;
     private Texture menuBtnTexture;
     private Image bg, ground;
+    private ImageButton newGameBtn,resumeBtn, mainMenuBtn;
     private String charName, bgName;
 
     public PauseState(GameStateManager gsm){
@@ -75,49 +77,62 @@ public class PauseState extends State{
 
         newGameBtnTexture = new Texture("newgamebtn4.png");
         Drawable newGameButtonDrawable = new TextureRegionDrawable(new TextureRegion(newGameBtnTexture));
-        ImageButton newGameBtn = new ImageButton(newGameButtonDrawable);
+        newGameBtn = new ImageButton(newGameButtonDrawable);
         newGameBtn.setSize(newGameBtnTexture.getWidth(),newGameBtnTexture.getHeight());
         newGameBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+
+                super.touchUp(event, x, y, pointer, button);
+                newGameBtn.setPosition(popUp.getWidth()*0.27f, popUp.getY() - popUp.getHeight()/3);
                 System.out.println("Press a Button");
+                gsm.set(new PlayState(gsm,charName,bgName));
+
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new PlayState(gsm,charName,bgName));
+
+                newGameBtn.addAction(Actions.moveTo(newGameBtn.getX() + 1.5f, newGameBtn.getY() - 1.5f));
                 return true;
             }
         });
 
         resumeBtnTexture = new Texture("resumebtn.png");
         Drawable resumeButtonDrawable = new TextureRegionDrawable(new TextureRegion(resumeBtnTexture));
-        ImageButton resumeBtn = new ImageButton(resumeButtonDrawable);
+        resumeBtn = new ImageButton(resumeButtonDrawable);
         resumeBtn.setSize(resumeBtnTexture.getWidth(), resumeBtnTexture.getHeight());
         resumeBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                super.touchUp(event, x, y, pointer, button);
+                resumeBtn.setPosition(popUp.getWidth()*0.27f, newGameBtn.getY() - newGameBtn.getHeight() - 12);
                 System.out.println("Press a Button");
+                gsm.pop();
+
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.pop();
+                resumeBtn.addAction(Actions.moveTo(resumeBtn.getX() + 1.5f, resumeBtn.getY() - 1.5f));
                 return true;
             }
         });
 
         menuBtnTexture = new Texture("mainmenubtn.png");
         Drawable menuButtonDrawable = new TextureRegionDrawable(new TextureRegion(menuBtnTexture));
-        ImageButton mainMenuBtn = new ImageButton(menuButtonDrawable);
+        mainMenuBtn = new ImageButton(menuButtonDrawable);
         mainMenuBtn.setSize(menuBtnTexture.getWidth(), menuBtnTexture.getHeight());
         mainMenuBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
+                mainMenuBtn.setPosition(popUp.getWidth()*0.27f, newGameBtn.getY() - resumeBtn.getHeight() - 12);
                 System.out.println("Press a Button");
+                gsm.set(new MenuState(gsm,charName,bgName));
+
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new MenuState(gsm,charName,bgName));
+                mainMenuBtn.addAction(Actions.moveTo(mainMenuBtn.getX() + 1.5f, mainMenuBtn.getY() - 1.5f));
                 return true;
             }
         });
@@ -129,7 +144,7 @@ public class PauseState extends State{
         popUp.add(resumeBtn);
         popUp.add(mainMenuBtn);
 
-        newGameBtn.setPosition(popUp.getWidth()*0.27f, popUp.getY() - popUp.getHeight()/3);
+        newGameBtn.setPosition(popUp.getWidth()*0.27f, popUp.getY() - popUp.getHeight()/1.75f);
         resumeBtn.setPosition(popUp.getWidth()*0.27f, newGameBtn.getY() - newGameBtn.getHeight() - 12);
         mainMenuBtn.setPosition(popUp.getWidth()*0.27f, resumeBtn.getY() -  resumeBtn.getHeight() - 12);
 
@@ -142,6 +157,7 @@ public class PauseState extends State{
     }
     @Override
     public void update(float dt) {
+        Gdx.input.setInputProcessor(stage);
         cam.update();
     }
 

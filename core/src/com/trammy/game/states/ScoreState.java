@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -26,6 +27,7 @@ public class ScoreState extends State{
     private Window popUp;
     private Texture popUpBg, menuBtnTexture, newGameBtnTexture;
     private Image ground, bg;
+    private ImageButton mainMenuBtn, newGameBtn;
     private Label highScoreLabel, currentScoreLabel;
     private Label.LabelStyle labelStyle;
     private String highScoreText, currentScoreText, charName, bgName;
@@ -76,7 +78,7 @@ public class ScoreState extends State{
 
         menuBtnTexture = new Texture("mainmenubtn.png");
         Drawable menuButtonDrawable = new TextureRegionDrawable(new TextureRegion(menuBtnTexture));
-        ImageButton mainMenuBtn = new ImageButton(menuButtonDrawable);
+        mainMenuBtn = new ImageButton(menuButtonDrawable);
         mainMenuBtn.setSize(menuBtnTexture.getWidth(), menuBtnTexture.getHeight());
         mainMenuBtn.setPosition(cam.position.x - mainMenuBtn.getWidth()/2 , popUp.getY() - mainMenuBtn.getHeight() - 20);
         mainMenuBtn.addListener(new InputListener(){
@@ -85,28 +87,34 @@ public class ScoreState extends State{
             {
                 super.touchUp(event, x, y, pointer, button);
                 System.out.println("Press a Button");
+                mainMenuBtn.setPosition(cam.position.x - mainMenuBtn.getWidth()/2 , popUp.getY() - mainMenuBtn.getHeight() - 20);
                 gsm.set(new MenuState(gsm,charName,bgName));
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
+                mainMenuBtn.addAction(Actions.moveTo(mainMenuBtn.getX() + 1.5f, mainMenuBtn.getY() - 1.5f));
                 return true;
             }
         });
 
         newGameBtnTexture = new Texture("newgamebtn4.png");
         Drawable newGameButtonDrawable = new TextureRegionDrawable(new TextureRegion(newGameBtnTexture));
-        ImageButton newGameBtn = new ImageButton(newGameButtonDrawable);
+        newGameBtn = new ImageButton(newGameButtonDrawable);
         newGameBtn.setSize(newGameBtnTexture.getWidth(),newGameBtnTexture.getHeight());
         newGameBtn.setPosition(cam.position.x - mainMenuBtn.getWidth()/2 , mainMenuBtn.getY() - newGameBtn.getHeight() - 20);
         newGameBtn.addListener(new InputListener(){
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                 System.out.println("Press a Button");
+                gsm.set(new PlayState(gsm,charName,bgName));
+                newGameBtn.setPosition(cam.position.x - mainMenuBtn.getWidth()/2 , mainMenuBtn.getY() - newGameBtn.getHeight() - 20);
+
             }
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                gsm.set(new PlayState(gsm,charName,bgName));
+                newGameBtn.addAction(Actions.moveTo(newGameBtn.getX() + 1.5f, newGameBtn.getY() - 1.5f));
+
                 return true;
             }
         });
